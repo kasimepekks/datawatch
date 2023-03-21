@@ -1,0 +1,160 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>车辆主表参数编辑</title>
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/layui/layui.js"></script>
+
+</head>
+<body>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>车辆主表参数</legend>
+    </fieldset>
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">车辆号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="vehicleid" id="vehicleid" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">GPS显示点数</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="displaygpspoints" placeholder="必填项" autocomplete="off" class="layui-input">
+
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">采样率</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="samplerate" id="samplerate" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">数据点数</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="numberpoints" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+     
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">国家</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="country" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">地区</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="area" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+        </div>
+           <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">导入权限</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" id="importaccess" lay-skin="switch" lay-filter="importaccess" title="开关" lay-text="ON|OFF">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">分析权限</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" id="analysisaccess" lay-skin="switch" lay-filter="analysisaccess" title="开关" lay-text="ON|OFF">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">预测权限</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" id="predictaccess" lay-skin="switch" lay-filter="predictaccess" title="开关" lay-text="ON|OFF">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">显示权限</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" id="state" lay-skin="switch" lay-filter="state" title="开关" lay-text="ON|OFF">
+
+                </div>
+            </div>
+           
+
+        </div>
+
+        <div class="layui-form-item">
+           
+            <div class="layui-inline">
+                <label class="layui-form-label">监控页面标题</label>
+                <div class="layui-input-inline">
+                    <textarea class="layui-textarea" placeholder="必填项" id="remarks" autocomplete="off"></textarea>
+                </div>
+            </div>
+
+        </div>
+        
+
+    </form>
+    <script>
+
+        var importaccesscheck;
+        var analysisaccesscheck;
+        var predictaccesscheck;
+        var statecheck;
+        layui.use(['element', 'layer', 'form', 'laydate'], function () {
+            var element = layui.element;
+            var $ = layui.jquery;
+            layer = layui.layer;
+
+            var form = layui.form;
+            //这里有个坑，由于主表里点击编辑打开pop表会对pop表设置开或关，但是pop表在打开时可能会先执行此页代码，所以需要延后以确保主表代码先执行
+            //先拿到switch的value，即是否选中switch，然后再看是否switch是否修改
+            importaccesscheck = ($.trim($('#importaccess').is(":checked"))) == "true" ? 1 : 0;
+
+            analysisaccesscheck = ($.trim($('#analysisaccess').is(":checked"))) == "true" ? 1 : 0;
+            predictaccesscheck = ($.trim($('#predictaccess').is(":checked"))) == "true" ? 1 : 0;
+            statecheck = ($.trim($('#state').is(":checked"))) == "true" ? 1 : 0;
+
+            form.on('switch(importaccess)', function (data) {
+
+                importaccesscheck = data.elem.checked; //开关是否开启，true或者false
+
+            });
+            form.on('switch(analysisaccess)', function (data) {
+
+                analysisaccesscheck = data.elem.checked; //开关是否开启，true或者false
+
+            });
+            form.on('switch(predictaccess)', function (data) {
+
+                predictaccesscheck = data.elem.checked; //开关是否开启，true或者false
+
+            });
+            form.on('switch(state)', function (data) {
+
+                statecheck = data.elem.checked; //开关是否开启，true或者false
+
+            });
+           
+            setTimeout(() => { layui.form.render('checkbox'); }, 200);
+
+        });
+
+
+    </script>
+
+</body>
+</html>
+

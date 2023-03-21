@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <BaseOutputPath>D:\VS_Project\编译后的项目\dal</BaseOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="SH_ADF0979DAL\AnalysisDataDAL\AnalysisData_ACC_DAL.cs~RFee2d44.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Zack.EFCore.Batch.MySQL.Pomelo" Version="1.4.9" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IBLL\IBLL.csproj" />
+    <ProjectReference Include="..\IDAL\IDAL.csproj" />
+    <ProjectReference Include="..\MysqlforDataWatch\MysqlforDataWatch.csproj" />
+    <ProjectReference Include="..\Tools\Tools.csproj" />
+  </ItemGroup>
+
+</Project>

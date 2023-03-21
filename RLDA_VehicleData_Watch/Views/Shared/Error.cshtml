@@ -1,0 +1,67 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>无权限</title>
+
+  
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <style type="text/css">
+        .pic {
+            text-align: center;
+        }
+
+        .row {
+            transform: translateY(50%);
+        }
+
+        h1 {
+            font-size: 100px;
+            font-weight: bold
+        }
+
+        h2 {
+            font-size: 30px;
+            font-weight: bold
+        }
+
+        p {
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pic">
+                    <img src="~/Pictures/404.JPG" class="img-responsive" />
+
+                </div>
+            </div>
+            <div class="col-md-6" id="text">
+                <div>
+                    <h1>404</h1>
+                    <br />
+                    <h2>抱歉，你没有访问权限！请重新<a href="@Url.Action("Login", "Home")"><strong><u>登录</u></strong></a></h2>
+                    <br />
+                    <br />
+                    <p>
+                        Sorry, you have no access permissions!
+                        How you got here is a mystery.
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div> 
+
+</body>
+</html>

@@ -1,0 +1,271 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>车辆参数副表-数据导入</title>
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/layui/layui.js"></script>
+
+</head>
+<body>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>车辆参数副表-数据导入</legend>
+    </fieldset>
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">车辆号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="vehicleid" id="vehicleid" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">GPS导入降采样倍数</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="importgpsreductiontimes" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">input导入降采样倍数</label>
+                <div class="layui-input-inline">
+                    <input type="text"  id="importaccreductiontimes" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">result导入降采样倍数</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="importwftreductiontimes" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">油门实际名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="throttlecolumnname" placeholder="请填写csv里实际的油门通道名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">制动实际名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="brakecolumnname" placeholder="请填写csv里实际的制动通道名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">转角实际名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="whlangcolumnname" placeholder="请填写csv里实际的转角通道名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">转角速度实际名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="whlanggrcolumnname" placeholder="请填写csv里实际的转角速度通道名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">左前轮心加速度Z实际名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="acczwhllf" placeholder="请填写csv里实际的轮心加速度通道名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">右前轮心加速度Z实际名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="acczwhlrf" placeholder="请填写csv里实际的轮心加速度通道名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">左后轮心加速度Z实际名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="acczwhllr" placeholder="请填写csv里实际的轮心加速度通道名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">车速实际名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="speedcolumnname" placeholder="请填写csv里实际的车速通道名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">车身加速度X实际名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="accxbody" placeholder="请填写csv里实际的车身加速度通道名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">车身加速度Y实际名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="accybody" placeholder="请填写csv里实际的车身加速度通道名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+     
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">统计值导入</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" name="statisticimport" id="statisticimport" lay-skin="switch" lay-filter="statisticimport" title="开关" lay-text="ON|OFF">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">经纬度导入</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" id="gpsimport" lay-skin="switch" lay-filter="gpsimport" title="开关" lay-text="ON|OFF">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">速度导入</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" name="speedimport" id="speedimport" lay-skin="switch" lay-filter="speedimport" title="开关" lay-text="ON|OFF">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">油门导入</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" id="throttleimport" lay-skin="switch" lay-filter="throttleimport" title="开关" lay-text="ON|OFF">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">刹车导入</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" name="brakeimport" id="brakeimport" lay-skin="switch" lay-filter="brakeimport" title="开关" lay-text="ON|OFF">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">转向导入</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" id="steeringimport" lay-skin="switch" lay-filter="steeringimport" title="开关" lay-text="ON|OFF">
+                </div>
+            </div>
+        </div>
+         <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">冲击导入</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" name="bumpimport" id="bumpimport" lay-skin="switch" lay-filter="bumpimport" title="开关" lay-text="ON|OFF">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">WFT导入</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" id="wftimport" lay-skin="switch" lay-filter="wftimport" title="开关" lay-text="ON|OFF">
+                </div>
+            </div>
+        </div>
+       
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">input导入路径</label>
+                <div class="layui-input-inline">
+                    <textarea class="layui-textarea" placeholder="必填项" id="importinputpath" autocomplete="off"></textarea>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">result导入路径</label>
+                <div class="layui-input-inline">
+                    <textarea class="layui-textarea" placeholder="必填项" id="importresultpath" autocomplete="off"></textarea>
+                </div>
+            </div>
+        </div>
+      
+    </form>
+    <script>
+
+
+        var statisticimportcheck;
+        var gpsimportcheck;
+        var speedimportcheck;
+        var throttleimportcheck;
+        var brakeimportcheck;
+        var steeringimportcheck;
+        var bumpimportcheck;
+        var wftimportcheck;
+     
+        layui.use(['element','layer','form','laydate'], function () {
+             var element = layui.element;
+             var $ = layui.jquery;
+             layer = layui.layer;
+
+            var form = layui.form;
+
+            //先拿到switch的value，即是否选中switch，然后再看是否switch是否修改
+            statisticimportcheck = ($.trim($('#statisticimport').is(":checked"))) == "true" ? 1 : 0;
+            gpsimportcheck = ($.trim($('#gpsimport').is(":checked"))) == "true" ? 1 : 0;
+            speedimportcheck = ($.trim($('#speedimport').is(":checked"))) == "true" ? 1 : 0;
+            steeringimportcheck = ($.trim($('#steeringimport').is(":checked"))) == "true" ? 1 : 0;
+            brakeimportcheck = ($.trim($('#brakeimport').is(":checked"))) == "true" ? 1 : 0;
+            throttleimportcheck = ($.trim($('#throttleimport').is(":checked"))) == "true" ? 1 : 0;
+            bumpimportcheck = ($.trim($('#bumpimport').is(":checked")))=="true"?1:0;
+            wftimportcheck = ($.trim($('#wftimport').is(":checked"))) == "true" ? 1 : 0;
+
+            form.on('switch(statisticimport)', function (data) {
+
+                statisticimportcheck = data.elem.checked; //开关是否开启，true或者false
+
+            });
+            form.on('switch(gpsimport)', function (data) {
+
+                gpsimportcheck = data.elem.checked; //开关是否开启，true或者false
+
+            });
+            form.on('switch(speedimport)', function (data) {
+
+                speedimportcheck = data.elem.checked; //开关是否开启，true或者false
+
+            });
+            form.on('switch(throttleimport)', function (data) {
+
+                throttleimportcheck = data.elem.checked; //开关是否开启，true或者false
+
+            });
+            form.on('switch(brakeimport)', function (data) {
+
+                brakeimportcheck = data.elem.checked; //开关是否开启，true或者false
+
+            });
+            form.on('switch(steeringimport)', function (data) {
+
+                steeringimportcheck = data.elem.checked; //开关是否开启，true或者false
+
+            });
+            form.on('switch(bumpimport)', function (data) {
+
+                bumpimportcheck = data.elem.checked; //开关是否开启，true或者false
+
+            });
+            form.on('switch(wftimport)', function (data) {
+
+                wftimportcheck = data.elem.checked; //开关是否开启，true或者false
+
+            });
+            setTimeout(()=>{ layui.form.render('checkbox');},200);
+           
+
+            });
+
+
+    </script>
+
+</body >
+</html >

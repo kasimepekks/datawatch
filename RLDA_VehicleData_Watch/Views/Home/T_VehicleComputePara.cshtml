@@ -1,0 +1,344 @@
+﻿@{
+    ViewData["Title"] = "车辆参数副表-数据分析";
+    Layout = "_Layout_DisplayAll";
+}
+<table id="T_VehicleComputePara" lay-filter="T_VehicleComputePara" lay-even></table>
+
+
+@section Scripts{
+
+
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container">
+
+
+            <button class="layui-btn layui-btn-sm" lay-event="AddData">添加</button>
+            <button class="layui-btn layui-btn-sm" lay-event="ReloadData">刷新</button>
+        </div>
+    </script>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="Singeldel">删除</a>
+    </script>
+
+    <script>
+        var user = "@ViewBag.User";
+
+        layui.use(['element', 'layer', 'table', 'form'], function () {
+            var element = layui.element;
+            var table = layui.table;
+            var $ = layui.jquery;
+            var bodyAdd;
+            var bodyEdit;
+            var tableIns = table.render(
+                {
+                    elem: '#T_VehicleComputePara'
+                    , toolbar: '#toolbarDemo'
+                    , url: '@Url.Action("GetT_VehicleComputeParaSetup", "Home")' //数据接口
+                    , limit: 30
+                    , even: true
+                    , page: true //开启分页
+                    , size: 'sm'
+                    , cols: [[ //表头
+
+                        { field: 'id', title: 'ID', width: '60', sort: true }
+
+                        , { field: 'vehicleid', title: '车辆编号', width: '120', sort: true }
+                       
+                        , { field: 'wheelbaselower', title: '轴距最小', width: '100', sort: true }
+                        , { field: 'wheelbaseupper', title: '轴距最大', width: '100', sort: true }
+                        , { field: 'bumpzerostandard', title: '冲击清零', width: '100', sort: true }
+                        , { field: 'bumpmaxspeed', title: '冲击允许速度', width: '100', sort: true }
+                        , { field: 'bumptimegap', title: '冲击最少点数', width: '100', sort: true }
+                        , { field: 'accvaluegap', title: '加速度最大落差值', width: '100', sort: true }
+                        , { field: 'acctimegap', title: '加速度最大落差点数', width: '100', sort: true }
+                        , { field: 'brakezerostandard', title: '制动清零', width: '100', sort: true }
+                        , { field: 'brakelastingpoints', title: '制动最少点数', width: '100', sort: true }
+                        , { field: 'steeringzerostandard', title: '转向清零', width: '100', sort: true }
+                        , { field: 'steeringlastingpoints', title: '转向最少点数', width: '100', sort: true }
+                        , { field: 'throttlezerostandard', title: '油门清零', width: '100', sort: true }
+                        , { field: 'throttlelastingpoints', title: '油门最少点数', width: '100', sort: true }
+
+
+                        , { fixed: 'right', title: '操作', width: '120', toolbar: '#barDemo' }
+                    ]]
+                });
+
+            table.on('tool(T_VehicleComputePara)', function (obj) {
+                var data = obj.data;
+                //console.log(data);
+                if (user == "Admin") {
+                    if (obj.event === 'edit') {
+
+                        layer.open({
+                            type: 2,
+                            title: '编辑车辆参数副表-数据分析',
+                            shadeClose: true,
+                            shade: 0.8,
+                            area: ['720px', '80%'],
+                            content: '@Url.Action("T_VehicleComputeParaPopUp", "PopUp")', //iframe的url
+                            btn: ['确认', '取消'],
+                            yes: function (index) {
+                                var vehicleidtext = bodyEdit.find('#vehicleid').val();
+                                var id = data.id;//获得选中行的id值
+                                var wheelbaselower = bodyEdit.find('#wheelbaselower').val();
+                                var wheelbaseupper = bodyEdit.find('#wheelbaseupper').val();
+
+                                var bumpzerostandard = bodyEdit.find('#bumpzerostandard').val();
+                                var bumpmaxspeed = bodyEdit.find('#bumpmaxspeed').val();
+                                var bumptimegap = bodyEdit.find('#bumptimegap').val();
+                                var accvaluegap = bodyEdit.find('#accvaluegap').val();
+                                var acctimegap = bodyEdit.find('#acctimegap').val();
+                                var brakezerostandard = bodyEdit.find('#brakezerostandard').val();
+                                var brakelastingpoints = bodyEdit.find('#brakelastingpoints').val();
+                                var steeringzerostandard = bodyEdit.find('#steeringzerostandard').val();
+                                var steeringlastingpoints = bodyEdit.find('#steeringlastingpoints').val();
+                                var throttlezerostandard = bodyEdit.find('#throttlezerostandard').val();
+                                var throttlelastingpoints = bodyEdit.find('#throttlelastingpoints').val();
+
+                                if (vehicleidtext != "" && wheelbaselower != "" && wheelbaseupper != "" && bumpzerostandard != "" && bumpmaxspeed != ""
+                                    && bumptimegap != "" && accvaluegap != "" && acctimegap != "" && brakezerostandard != "" && brakelastingpoints != "" && steeringzerostandard != ""
+                                    && steeringlastingpoints != "" && throttlezerostandard != "" && throttlelastingpoints != "" ) 
+                                {
+                                    $.ajax({
+                                        //请求方式
+                                        type: "POST",
+                                        //请求的媒体类型
+                                        //contentType: "application/json;charset=UTF-8",
+                                        //请求地址
+                                        url: '@Url.Action("AddorEditT_VehicleComputePara", "Home")',
+                                        //数据，json字符串
+                                        data: {
+                                            id: id,
+                                            vehicleidtext: vehicleidtext,
+                                          
+                                            wheelbaselower: wheelbaselower,
+                                            wheelbaseupper: wheelbaseupper,
+                                            bumpzerostandard: bumpzerostandard,
+                                            bumpmaxspeed: bumpmaxspeed,
+                                            bumptimegap: bumptimegap,
+                                            accvaluegap: accvaluegap,
+                                            acctimegap: acctimegap,
+                                            brakezerostandard: brakezerostandard,
+                                            brakelastingpoints: brakelastingpoints,
+                                            steeringzerostandard: steeringzerostandard,
+                                            steeringlastingpoints: steeringlastingpoints,
+                                            throttlezerostandard: throttlezerostandard,
+                                            throttlelastingpoints: throttlelastingpoints,
+                                          
+                                            method: "edit"
+                                        },
+                                        //请求成功
+                                        success: function (result) {
+                                            layer.msg(result + "请刷新页面");
+                                            //不管有没有修改参数，点确定，就发送信号给服务器让服务器删除内存数据
+                                            $.ajax({
+                                                type: "POST",
+                                                url: '@Url.Action("DeleteOtherMemory", "Home")',
+                                                data: {
+                                                    vehicleidtext: data.vehicleid,
+                                                },
+                                                error: function (e) {
+                                                    layer.msg(e);
+                                                }
+                                            });
+                                        },
+
+                                        //请求失败，包含具体的错误信息
+                                        error: function (e) {
+                                            layer.msg(e);
+                                        }
+                                    });
+                                    layer.close(index);
+                                }
+                                else {
+                                    layer.msg('请填写必填项');
+                                    //console.log(abscheck);
+                                }
+
+
+                            },
+                            success: function (layero, index) {
+
+                                bodyEdit = layer.getChildFrame('body', index);//获得子frame的body里的元素
+                                iframeEdit = window[layero.find('iframe')[0]['name']];
+
+                                //这里的data是指表格里的数据
+                                bodyEdit.find('#vehicleid').val(data.vehicleid);
+                              
+                                bodyEdit.find('#wheelbaselower').val(data.wheelbaselower);
+                                bodyEdit.find('#wheelbaseupper').val(data.wheelbaseupper);
+                                bodyEdit.find('#bumpzerostandard').val(data.bumpzerostandard);
+                                bodyEdit.find('#bumpmaxspeed').val(data.bumpmaxspeed);
+                                bodyEdit.find('#bumptimegap').val(data.bumptimegap);
+                                bodyEdit.find('#accvaluegap').val(data.accvaluegap);
+                                bodyEdit.find('#acctimegap').val(data.acctimegap);
+
+                                bodyEdit.find('#brakezerostandard').val(data.brakezerostandard);
+                                bodyEdit.find('#brakelastingpoints').val(data.brakelastingpoints);
+                                bodyEdit.find('#steeringzerostandard').val(data.steeringzerostandard);
+                                bodyEdit.find('#steeringlastingpoints').val(data.steeringlastingpoints);
+                                bodyEdit.find('#throttlezerostandard').val(data.throttlezerostandard);
+                                bodyEdit.find('#throttlelastingpoints').val(data.throttlelastingpoints);
+                             
+                            }
+                        });
+
+                    }
+                    else if (obj.event === 'Singeldel') {
+
+                        layer.confirm('确定删除吗？', function (index) {
+                            $.ajax({
+                                //请求方式
+                                type: "POST",
+                                //请求的媒体类型
+                                //contentType: "application/json;charset=UTF-8",
+                                //请求地址
+                                url: '@Url.Action("DeleteSingleT_VehicleComputePara", "Home")',
+                                //数据，json字符串
+                                data: {
+                                    id: data.id
+                                },
+                                //请求成功
+                                success: function (result) {
+                                    layer.msg(result + "请刷新页面");
+                                },
+                                //请求失败，包含具体的错误信息
+                                error: function (e) {
+                                    layer.msg(e);
+                                }
+                            });
+                            layer.close(index);
+                        });
+
+
+                    }
+                }
+                else {
+                    window.location.href = "/Home/Error";
+                }
+            });
+
+            table.on('toolbar(T_VehicleComputePara)', function (obj) {
+                switch (obj.event) {
+
+                    case 'AddData':
+                        if (user == "Admin") {
+
+                            layer.open({
+                                type: 2,
+                                title: '添加项目信息',
+                                shadeClose: true,
+                                shade: 0.8,
+                                area: ['720px', '80%'],
+                                content: '@Url.Action("T_VehicleComputeParaPopUp", "PopUp")', //iframe的url
+                                btn: ['确认', '取消'],
+                                yes: function (index) {
+                                    //var body = layer.getChildFrame('body', index);
+                                    var vehicleidtext = bodyEdit.find('#vehicleid').val();
+                                 
+                                    var wheelbaselower = bodyEdit.find('#wheelbaselower').val();
+                                    var wheelbaseupper = bodyEdit.find('#wheelbaseupper').val();
+
+                                    var bumpzerostandard = bodyEdit.find('#bumpzerostandard').val();
+                                    var bumpmaxspeed = bodyEdit.find('#bumpmaxspeed').val();
+                                    var bumptimegap = bodyEdit.find('#bumptimegap').val();
+                                    var accvaluegap = bodyEdit.find('#accvaluegap').val();
+                                    var acctimegap = bodyEdit.find('#acctimegap').val();
+                                    var brakezerostandard = bodyEdit.find('#brakezerostandard').val();
+                                    var brakelastingpoints = bodyEdit.find('#brakelastingpoints').val();
+                                    var steeringzerostandard = bodyEdit.find('#steeringzerostandard').val();
+                                    var steeringlastingpoints = bodyEdit.find('#steeringlastingpoints').val();
+                                    var throttlezerostandard = bodyEdit.find('#throttlezerostandard').val();
+                                    var throttlelastingpoints = bodyEdit.find('#throttlelastingpoints').val();
+
+
+                                    if (vehicleidtext != "" && wheelbaselower != "" && wheelbaseupper != "" && bumpzerostandard != "" && bumpmaxspeed != ""
+                                        && bumptimegap != "" && accvaluegap != "" && acctimegap != "" && brakezerostandard != "" && brakelastingpoints != "" && steeringzerostandard != ""
+                                        && steeringlastingpoints != "" && throttlezerostandard != "" && throttlelastingpoints != "" ) {
+                                        $.ajax({
+                                            //请求方式
+                                            type: "POST",
+                                            //请求的媒体类型
+                                            //contentType: "application/json;charset=UTF-8",
+                                            //请求地址
+                                            url: '@Url.Action("AddorEditT_VehicleComputePara", "Home")',
+                                            //数据，json字符串
+                                            data: {
+                                                vehicleidtext: vehicleidtext,
+                                                
+                                                wheelbaselower: wheelbaselower,
+                                                wheelbaseupper: wheelbaseupper,
+                                                bumpzerostandard: bumpzerostandard,
+                                                bumpmaxspeed: bumpmaxspeed,
+                                                bumptimegap: bumptimegap,
+                                                accvaluegap: accvaluegap,
+                                                acctimegap: acctimegap,
+                                                brakezerostandard: brakezerostandard,
+                                                brakelastingpoints: brakelastingpoints,
+                                                steeringzerostandard: steeringzerostandard,
+                                                steeringlastingpoints: steeringlastingpoints,
+                                                throttlezerostandard: throttlezerostandard,
+                                                throttlelastingpoints: throttlelastingpoints,
+                                                method: "add"
+                                            },
+                                            //请求成功
+                                            success: function (result) {
+                                                layer.msg(result + "请刷新页面");
+                                            },
+                                            //请求失败，包含具体的错误信息
+                                            error: function (e) {
+                                                layer.msg(e);
+                                            }
+                                        });
+                                        layer.close(index);
+                                    }
+                                    else {
+                                        layer.msg('请填写必填项');
+                                        //console.log(abscheck);
+                                    }
+                                },
+                                success: function (layero, index) {
+                                    bodyEdit = layer.getChildFrame('body', index);
+                                    iframeAdd = window[layero.find('iframe')[0]['name']];
+                                    bodyEdit.find('#wheelbaselower').val(2.1);
+                                    bodyEdit.find('#wheelbaseupper').val(2.9);
+                                    bodyEdit.find('#bumpzerostandard').val(10);
+                                    bodyEdit.find('#bumpmaxspeed').val(200);
+                                    bodyEdit.find('#bumptimegap').val(5);
+                                    bodyEdit.find('#accvaluegap').val(2);
+                                    bodyEdit.find('#acctimegap').val(10);
+
+                                    bodyEdit.find('#brakezerostandard').val(150);
+                                    bodyEdit.find('#brakelastingpoints').val(5);
+                                    bodyEdit.find('#steeringzerostandard').val(60);
+                                    bodyEdit.find('#steeringlastingpoints').val(5);
+                                    bodyEdit.find('#throttlezerostandard').val(5);
+                                    bodyEdit.find('#throttlelastingpoints').val(5);
+
+                                    bodyEdit.find('#legend').val("添加车辆参数副表-数据分析");
+                                }
+                            });
+                        }
+                        else {
+
+
+                            window.location.href = "/Home/Error";
+                        }
+
+                        break;
+                    case 'ReloadData':
+                        tableIns.reload({
+                            page: { curr: 1, limit: 30 },
+                            url: '@Url.Action("GetT_VehicleComputeParaSetup", "Home")',
+                            method: 'post'
+                        });
+                        break;
+                };
+            });
+
+        })
+
+
+    </script>
+    }

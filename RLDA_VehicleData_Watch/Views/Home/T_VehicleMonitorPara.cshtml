@@ -1,0 +1,336 @@
+﻿@{
+    ViewData["Title"] = "车辆参数副表-监控";
+    Layout = "_Layout_DisplayAll";
+}
+<table id="T_VehicleMonitorPara" lay-filter="T_VehicleMonitorPara" lay-even></table>
+
+
+@section Scripts{
+
+
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container">
+
+
+            <button class="layui-btn layui-btn-sm" lay-event="AddData">添加</button>
+            <button class="layui-btn layui-btn-sm" lay-event="ReloadData">刷新</button>
+        </div>
+    </script>
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="Singeldel">删除</a>
+    </script>
+
+    <script>
+        var user = "@ViewBag.User";
+
+        layui.use(['element', 'layer', 'table', 'form'], function () {
+            var element = layui.element;
+            var table = layui.table;
+            var $ = layui.jquery;
+            var bodyAdd;
+            var bodyEdit;
+            var tableIns = table.render(
+                {
+                    elem: '#T_VehicleMonitorPara'
+                    , toolbar: '#toolbarDemo'
+                    , url: '@Url.Action("GetT_VehicleMonitorParaSetup", "Home")' //数据接口
+                    , limit: 30
+                    , even: true
+                    , page: true //开启分页
+                    , size: 'sm'
+                    , cols: [[ //表头
+
+                        { field: 'id', title: 'id', width: '60', sort: true }
+
+                        , { field: 'vehicleid', title: '车辆编号', width: '120', sort: true }
+                        , { field: 'monitorinputpath', title: '监控路径', width: '120', sort: true }
+                        , { field: 'monitorcsvcollumnname', title: '监控CSV字段名', width: '120', sort: true }
+                        , { field: 'monitorreductiontimes', title: '监控降采样倍数', width: '120', sort: true }
+                        , { field: 'echart1channelname', title: '图表1数据列', width: '100', sort: true }
+                        , { field: 'echart1title', title: '图表1标题', width: '100', sort: true }
+                        , { field: 'echart2channelname', title: '图表2数据列', width: '100', sort: true }
+                        , { field: 'echart2title', title: '图表2标题', width: '100', sort: true }
+                        , { field: 'echart3channelname', title: '图表3数据列', width: '100', sort: true }
+                        , { field: 'echart3title', title: '图表3标题', width: '100', sort: true }
+                        , { field: 'echart4channelname', title: '图表4数据列', width: '100', sort: true }
+                        , { field: 'echart4title', title: '图表4标题', width: '100', sort: true }
+                        , { field: 'echart5channelname', title: '图表5数据列', width: '100', sort: true }
+                        , { field: 'echart5title', title: '图表5标题', width: '100', sort: true }
+                        , { field: 'echart6channelname', title: '图表6数据列', width: '100', sort: true }
+                        , { field: 'echart6title', title: '图表6标题', width: '100', sort: true }
+                        
+                        , { fixed: 'right', title: '操作', width: '120', toolbar: '#barDemo' }
+                    ]]
+                });
+
+            table.on('tool(T_VehicleMonitorPara)', function (obj) {
+                var data = obj.data;
+                //console.log(data);
+                if (user == "Admin") {
+                    if (obj.event === 'edit') {
+
+                        layer.open({
+                            type: 2,
+                            title: '编辑车辆分析信息',
+                            shadeClose: true,
+                            shade: 0.8,
+                            area: ['720px', '80%'],
+                            content: '@Url.Action("T_VehicleMonitorPara_PopUp", "PopUp")', //iframe的url
+                            btn: ['确认', '取消'],
+                            yes: function (index) {
+                                var vehicleidtext = bodyEdit.find('#vehicleid').val();
+                                var monitorcsvcollumnname = bodyEdit.find('#monitorcsvcollumnname').val();
+                                var id = data.id;//获得选中行的id值
+                                var monitorreductiontimes = bodyEdit.find('#monitorreductiontimes').val();
+                                var monitorinputpath = bodyEdit.find('#monitorinputpath').val();
+                                var echart1channelname = bodyEdit.find('#echart1channelname').val();
+                                var echart1title = bodyEdit.find('#echart1title').val();
+                                var echart2channelname = bodyEdit.find('#echart2channelname').val();
+                                var echart2title = bodyEdit.find('#echart2title').val();
+                                var echart3channelname = bodyEdit.find('#echart3channelname').val();
+                                var echart3title = bodyEdit.find('#echart3title').val();
+                                var echart4channelname = bodyEdit.find('#echart4channelname').val();
+                                var echart4title = bodyEdit.find('#echart4title').val();
+                                var echart5channelname = bodyEdit.find('#echart5channelname').val();
+                                var echart5title = bodyEdit.find('#echart5title').val();
+                                var echart6channelname = bodyEdit.find('#echart6channelname').val();
+                                var echart6title = bodyEdit.find('#echart6title').val();
+
+                                if (vehicleidtext != "" && monitorreductiontimes != "" && monitorcsvcollumnname != "" && monitorinputpath != "") {
+                                    $.ajax({
+                                        //请求方式
+                                        type: "POST",
+                                        //请求的媒体类型
+                                        //contentType: "application/json;charset=UTF-8",
+                                        //请求地址
+                                        url: '@Url.Action("AddorEditSingleT_VehicleMonitorPara", "Home")',
+                                        //数据，json字符串
+                                        data: {
+                                            id: id,
+                                            vehicleidtext: vehicleidtext,
+                                            monitorcsvcollumnname: monitorcsvcollumnname,
+                                            monitorreductiontimes: monitorreductiontimes,
+                                            monitorinputpath: monitorinputpath,
+                                            echart1channelname: echart1channelname,
+                                            echart1title:echart1title,
+                                            echart2channelname:echart2channelname,
+                                            echart2title:echart2title,
+                                            echart3channelname: echart3channelname,
+                                            echart3title:echart3title,
+                                            echart4channelname:echart4channelname,
+                                            echart4title:echart4title,
+                                            echart5channelname: echart5channelname,
+                                            echart5title:echart5title,
+                                            echart6channelname:echart6channelname,
+                                            echart6title:echart6title,
+                                            method: "edit"
+                                        },
+                                        //请求成功
+                                        success: function (result) {
+                                            layer.msg(result + "请刷新页面");
+                                            //不管有没有修改参数，点了确定，就发送信号给服务器让服务器删除内存数据
+                                            $.ajax({
+                                                type: "POST",
+                                                url: '@Url.Action("DeleteMonitorMemory", "Home")',
+                                                data: {
+                                                    vehicleidtext: data.vehicleid,
+                                                },
+                                                error: function (e) {
+                                                    layer.msg(e);
+                                                }
+                                            });
+                                        },
+
+                                        //请求失败，包含具体的错误信息
+                                        error: function (e) {
+                                            layer.msg(e);
+                                        }
+                                    });
+                                    layer.close(index);
+                                }
+                                else {
+                                    layer.msg('请填写必填项');
+                                    //console.log(abscheck);
+                                }
+
+
+                            },
+                            success: function (layero, index) {
+
+                                bodyEdit = layer.getChildFrame('body', index);//获得子frame的body里的元素
+                                iframeEdit = window[layero.find('iframe')[0]['name']];
+
+                                //这里的data是指表格里的数据
+                                bodyEdit.find('#vehicleid').val(data.vehicleid);
+                                bodyEdit.find('#monitorcsvcollumnname').val(data.monitorcsvcollumnname);
+                                bodyEdit.find('#monitorinputpath').val(data.monitorinputpath);
+                                bodyEdit.find('#monitorreductiontimes').val(data.monitorreductiontimes);
+                                bodyEdit.find('#echart1channelname').val(data.echart1channelname)
+                                bodyEdit.find('#echart1title').val(data.echart1title)
+                                bodyEdit.find('#echart2channelname').val(data.echart2channelname)
+                                bodyEdit.find('#echart2title').val(data.echart2title)
+                                bodyEdit.find('#echart3channelname').val(data.echart3channelname)
+                                bodyEdit.find('#echart3title').val(data.echart3title)
+                                bodyEdit.find('#echart4channelname').val(data.echart4channelname)
+                                bodyEdit.find('#echart4title').val(data.echart4title)
+                                bodyEdit.find('#echart5channelname').val(data.echart5channelname)
+                                bodyEdit.find('#echart5title').val(data.echart5title)
+                                bodyEdit.find('#echart6channelname').val(data.echart6channelname)
+                                bodyEdit.find('#echart6title').val(data.echart6title)
+                            }
+                        });
+
+                    }
+                    else if (obj.event === 'Singeldel') {
+
+                        layer.confirm('确定删除吗？', function (index) {
+                            $.ajax({
+                                //请求方式
+                                type: "POST",
+                                //请求的媒体类型
+                                //contentType: "application/json;charset=UTF-8",
+                                //请求地址
+                                url: '@Url.Action("DeleteSingleT_VehicleMonitorPara", "Home")',
+                                //数据，json字符串
+                                data: {
+                                    id: data.id
+                                },
+                                //请求成功
+                                success: function (result) {
+                                    layer.msg(result + "请刷新页面");
+                                },
+                                //请求失败，包含具体的错误信息
+                                error: function (e) {
+                                    layer.msg(e);
+                                }
+                            });
+                            layer.close(index);
+                        });
+
+
+                    }
+                }
+                else {
+                    window.location.href = "/Home/Error";
+                }
+            });
+
+            table.on('toolbar(T_VehicleMonitorPara)', function (obj) {
+                switch (obj.event) {
+                    case 'AddData':
+                        if (user == "Admin") {
+
+                            layer.open({
+                                type: 2,
+                                title: '添加项目信息',
+                                shadeClose: true,
+                                shade: 0.8,
+                                area: ['720px', '80%'],
+                                content: '@Url.Action("T_VehicleMonitorPara_PopUp", "PopUp")', //iframe的url
+                                btn: ['确认', '取消'],
+                                yes: function (index) {
+                                    var vehicleidtext = bodyEdit.find('#vehicleid').val();
+                                    var monitorcsvcollumnname = bodyEdit.find('#monitorcsvcollumnname').val();
+                                    
+                                    var monitorreductiontimes = bodyEdit.find('#monitorreductiontimes').val();
+                                    var monitorinputpath = bodyEdit.find('#monitorinputpath').val();
+                                    var echart1channelname = bodyEdit.find('#echart1channelname').val();
+                                    var echart1title = bodyEdit.find('#echart1title').val();
+                                    var echart2channelname = bodyEdit.find('#echart2channelname').val();
+                                    var echart2title = bodyEdit.find('#echart2title').val();
+                                    var echart3channelname = bodyEdit.find('#echart3channelname').val();
+                                    var echart3title = bodyEdit.find('#echart3title').val();
+                                    var echart4channelname = bodyEdit.find('#echart4channelname').val();
+                                    var echart4title = bodyEdit.find('#echart4title').val();
+                                    var echart5channelname = bodyEdit.find('#echart5channelname').val();
+                                    var echart5title = bodyEdit.find('#echart5title').val();
+                                    var echart6channelname = bodyEdit.find('#echart6channelname').val();
+                                    var echart6title = bodyEdit.find('#echart6title').val();
+
+                                    if (vehicleidtext != "" && monitorreductiontimes != "" && monitorcsvcollumnname != "" && monitorinputpath != "") {
+                                        $.ajax({
+                                            //请求方式
+                                            type: "POST",
+                                            //请求的媒体类型
+                                            //contentType: "application/json;charset=UTF-8",
+                                            //请求地址
+                                            url: '@Url.Action("AddorEditSingleT_VehicleMonitorPara", "Home")',
+                                            //数据，json字符串
+                                            data: {
+                                                vehicleidtext: vehicleidtext,
+                                                monitorcsvcollumnname: monitorcsvcollumnname,
+                                                monitorreductiontimes: monitorreductiontimes,
+                                                monitorinputpath: monitorinputpath,
+                                                echart1channelname: echart1channelname,
+                                                echart1title: echart1title,
+                                                echart2channelname: echart2channelname,
+                                                echart2title: echart2title,
+                                                echart3channelname: echart3channelname,
+                                                echart3title: echart3title,
+                                                echart4channelname: echart4channelname,
+                                                echart4title: echart4title,
+                                                echart5channelname: echart5channelname,
+                                                echart5title: echart5title,
+                                                echart6channelname: echart6channelname,
+                                                echart6title: echart6title,
+
+                                                method: "add"
+                                            },
+                                            //请求成功
+                                            success: function (result) {
+                                                layer.msg(result + "请刷新页面");
+                                            },
+                                            //请求失败，包含具体的错误信息
+                                            error: function (e) {
+                                                layer.msg(e);
+                                            }
+                                        });
+                                        layer.close(index);
+                                    }
+                                    else {
+                                        layer.msg('请填写必填项');
+                                        //console.log(abscheck);
+                                    }
+                                },
+                                success: function (layero, index) {
+                                    bodyEdit = layer.getChildFrame('body', index);
+                                    iframeAdd = window[layero.find('iframe')[0]['name']];
+
+                                    bodyEdit.find('#monitorcsvcollumnname').val("Time,Spd,Lat,Lon,accxwhllf,accxwhlrf,accxwhllr,accxwhlrr,accywhllf,accywhlrf,accywhllr,accywhlrr,acczwhllf,acczwhlrf,acczwhllr,acczwhlrr,accxstlf,accxstrf,accxstlr,accxstrr,accystlf,accystrf,accystlr,accystrr,acczstlf,acczstrf,acczstlr,acczstrr");
+                                    bodyEdit.find('#monitorinputpath').val("D:/JianGuoYun/EC004/input/");
+                                    bodyEdit.find('#monitorreductiontimes').val(20);
+                                    bodyEdit.find('#echart1channelname').val("accxwhllf,accxwhlrf,accxwhllr,accxwhlrr")
+                                    bodyEdit.find('#echart1title').val("轮心加速度X")
+                                    bodyEdit.find('#echart2channelname').val("accywhllf,accywhlrf,accywhllr,accywhlrr")
+                                    bodyEdit.find('#echart2title').val("轮心加速度Y")
+                                    bodyEdit.find('#echart3channelname').val("acczwhllf,acczwhlrf,acczwhllr,acczwhlrr")
+                                    bodyEdit.find('#echart3title').val("轮心加速度Z")
+                                    bodyEdit.find('#echart4channelname').val("accxstlf,accxstrf,accxstlr,accxstrr")
+                                    bodyEdit.find('#echart4title').val("塔柱加速度X")
+                                    bodyEdit.find('#echart5channelname').val("accystlf,accystrf,accystlr,accystrr")
+                                    bodyEdit.find('#echart5title').val("塔柱加速度Y")
+                                    bodyEdit.find('#echart6channelname').val("acczstlf,acczstrf,acczstlr,acczstrr")
+                                    bodyEdit.find('#echart6title').val("塔柱加速度Z")
+                                }
+                            });
+                        }
+                        else {
+                            window.location.href = "/Home/Error";
+                        }
+                        break;
+                    case 'ReloadData':
+                        tableIns.reload({
+                            page: { curr: 1, limit: 30 },
+                            url: '@Url.Action("GetT_VehicleMonitorParaSetup", "Home")',
+                            method: 'post'
+                        });
+                        break;
+                };
+            });
+
+        })
+
+
+    </script>
+    }

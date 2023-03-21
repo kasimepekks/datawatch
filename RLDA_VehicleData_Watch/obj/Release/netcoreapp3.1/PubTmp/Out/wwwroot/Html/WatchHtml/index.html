@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="pagetitle">监控页面</title>
+  <link rel="stylesheet" href="../../css/index.css" />
+  <script src="../../MYJS/CommonforDisplayecharts.js"></script>
+ 
+  <style type="text/css">
+    .BMap_cpyCtrl {
+      display: none;
+    }
+
+    .anchorBL {
+      display: none;
+    }
+      .showreadtimes {
+          position: absolute;
+          top: 0;
+          right: 0rem;
+          line-height: 0.9375rem;
+          font-size: 0.25rem;
+          color: rgba(255, 255, 255, 0.7);
+      }
+  </style>
+
+</head>
+
+<body  id="capture">
+    <header>
+        <div class="showfilename" id="filename">文件名</div>
+        <h1 id="title">全球车辆预测系统</h1>
+
+        <div class="showTime">当前时间：2020年3月17日-0时54分14秒</div>
+        <div class="showreadtimes">0</div>
+        <script>
+            var t = null;
+            t = setTimeout(time, 1000); //開始运行
+            function time() {
+                clearTimeout(t); //清除定时器
+                dt = new Date();
+                var y = dt.getFullYear();
+                var mt = dt.getMonth() + 1;
+                var day = dt.getDate();
+                var h = dt.getHours(); //获取时
+                var m = dt.getMinutes(); //获取分
+                var s = dt.getSeconds(); //获取秒
+                document.querySelector(".showTime").innerHTML =
+                    "当前时间：" +
+                    y +
+                    "年" +
+                    mt +
+                    "月" +
+                    day +
+                    "日" +
+                    "-" +
+                    h +
+                    "时" +
+                    m +
+                    "分" +
+                    s +
+                    "秒";
+                t = setTimeout(time, 1000); //设定定时器，循环运行
+            }
+        </script>
+    </header>
+  <section class="mainbox">
+    <div class="column">
+      <div class="panel line1">
+        <h2 id="chart1_h2">轮心加速度X</h2>
+        <div class="chart"></div>
+        <div class="panel-footer"></div>
+      </div>
+      <div class="panel line2">
+        <h2 id="chart2_h2">轮心加速度Y</h2>
+        <div class="chart"></div>
+        <div class="panel-footer"></div>
+      </div>
+      <div class="panel line3">
+        <h2 id="chart3_h2">轮心加速度Z</h2>
+        <div class="chart"></div>
+        <div class="panel-footer"></div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="no">
+        <div class="no-hd">
+          <ul>
+            <li id="speed">0</li>
+            <li id="milege">0</li>
+          </ul>
+        </div>
+        <div class="no-bd">
+          <ul>
+            <li>实时车速（km/h）</li>
+            <li>总里程数（km）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mg">
+        <div class="mulan"></div>
+      </div>
+      <div class="map">
+        <div class="chart" id="chart"></div>
+
+      </div>
+    </div>
+    <div class="column">
+      <div class="panel line4">
+        <h2 id="chart4_h2">塔柱加速度X</h2>
+        <div class="chart"></div>
+        <div class="panel-footer"></div>
+      </div>
+      <div class="panel line5">
+        <h2 id="chart5_h2">塔柱加速度Y</h2>
+        <div class="chart"></div>
+        <div class="panel-footer"></div>
+      </div>
+      <div class="panel line6">
+        <h2 id="chart6_h2">塔柱加速度Z</h2>
+        <div class="chart"></div>
+        <div class="panel-footer"></div>
+      </div>
+    </div>
+  </section>
+  <script type="text/javascript">
+
+    var map;
+    var lushu;
+    var routpath = [];
+    var mycarIcon;
+    var myIcon;
+    if (navigator.onLine) {
+
+      var mycarIcon = new BMap.Icon('/Pictures/car_red.png',
+        new BMap.Size(52, 26), {
+        anchor: new BMap.Size(27, 13)
+      });
+      /* 百度地图API功能*/
+      map = new BMap.Map("chart");
+
+      map.centerAndZoom(new BMap.Point(121.472644, 31.231706), 12);
+
+      map.enableScrollWheelZoom(true);
+      //var top_right_navigation = new BMap.NavigationControl({ anchor: BMAP_ANCHOR_TOP_RIGHT, type: BMAP_NAVIGATION_CONTROL_SMALL }); //右上角，仅包含平移和缩放按钮
+      //map.addControl(top_right_navigation);
+      // 定义一个控件类,即function
+      function ZoomControl() {
+        // 默认停靠位置和偏移量
+        this.defaultAnchor = BMAP_ANCHOR_TOP_LEFT;
+        this.defaultOffset = new BMap.Size(10, 10);
+      }
+      function ZoomControl2() {
+        // 默认停靠位置和偏移量
+        this.defaultAnchor = BMAP_ANCHOR_TOP_RIGHT;
+        this.defaultOffset = new BMap.Size(10, 10);
+      }
+      /*通过JavaScript的prototype属性继承于BMap.Control*/
+      ZoomControl.prototype = new BMap.Control();
+      ZoomControl2.prototype = new BMap.Control();
+      //自定义控件必须实现自己的initialize方法,并且将控件的DOM元素返回
+      //在本方法中创建个div元素作为控件的容器,并将其添加到地图容器中
+      ZoomControl.prototype.initialize = function (map) {
+        // 创建一个DOM元素
+        var div = document.createElement("div");
+        // 添加文字说明
+        div.appendChild(document.createTextNode("复原"));
+        div.style.cursor = "pointer";
+        div.style.padding = "7px 10px";
+        div.style.fontSize = "5px";
+        div.style.boxShadow = "0 2px 6px 0 rgba(27, 142, 236, 0.5)";
+        div.style.borderRadius = "5px";
+        div.style.backgroundColor = "white";
+        // 绑定事件,点击一次放大两级
+        div.onclick = function (e) {
+          var allOverlay = map.getOverlays();
+          
+           for (var i = 0; i < allOverlay.length; i++) {
+            if (allOverlay[i].toString().indexOf("Marker") > 0) {//删除车标
+                
+                map.removeOverlay(allOverlay[i]);
+                
+           
+             }
+           }
+          
+          lushu = null;
+          //map.clearOverlays();
+        }
+        // 添加DOM元素到地图中
+        map.getContainer().appendChild(div);
+        // 将DOM元素返回
+        return div;
+      }
+      ZoomControl2.prototype.initialize = function (map) {
+        // 创建一个DOM元素
+        var div = document.createElement("div");
+        // 添加文字说明
+        div.appendChild(document.createTextNode("定位"));
+        div.style.cursor = "pointer";
+        div.style.padding = "7px 10px";
+        div.style.fontSize = "5px";
+        div.style.boxShadow = "0 2px 6px 0 rgba(27, 142, 236, 0.5)";
+        div.style.borderRadius = "5px";
+        div.style.backgroundColor = "white";
+        // 绑定事件,点击一次放大两级
+        div.onclick = function (e) {
+          if (routpath != undefined || routpath.length != 0) {
+
+            
+
+            // for (var i = 0; i < allOverlay.length; i++) {
+            //   if (allOverlay[i].toString().indexOf("Polyline") > 0) {//删除折线
+            //     map.removeOverlay(allOverlay[i]);
+            //   }
+              var marker = new BMap.Marker(routpath[routpath.length - 1], { icon: mycarIcon });
+             
+              map.addOverlay(marker);
+            }
+          }
+          // 添加DOM元素到地图中
+          map.getContainer().appendChild(div);
+          // 将DOM元素返回
+          return div;
+        }
+        // 创建控件
+        var myZoomCtrl = new ZoomControl();
+        var myZoomCtrl2 = new ZoomControl2();
+        // 添加到地图当中
+        map.addControl(myZoomCtrl);
+        map.addControl(myZoomCtrl2);
+      }
+  </script>
+
+
+  <script src="../../js/flexible.js"></script>
+  <script src="../../js/jquery.js"></script>
+  <script src="../../js/echarts.min.js"></script>
+  <script src="../../js/index.js"></script>
+
+</body>
+
+</html>

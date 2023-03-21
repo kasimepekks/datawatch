@@ -1,0 +1,152 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>车辆信息编辑</title>
+    <link href="~/layui/css/layui.css" rel="stylesheet" />
+    <script src="~/layui/layui.js"></script>
+
+</head>
+<body>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+        <legend>车辆副表参数-监控</legend>
+    </fieldset>
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">车辆号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="vehicleid" id="vehicleid" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">监控路径</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="monitorinputpath" placeholder="必填项（必须要加input）" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+        </div>
+      
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">CSV字段名（不包括时间，经纬度，速度）</label>
+                <div class="layui-input-inline">
+                    <textarea class="layui-textarea" placeholder="必填项" id="monitorcsvcollumnname" autocomplete="off"></textarea>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">监控降采样倍数</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="monitorreductiontimes" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">图表1数据列</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="echart1channelname" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">图表1标题</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="echart1title" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">图表2数据列</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="echart2channelname" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">图表2标题</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="echart2title" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">图表3数据列</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="echart3channelname" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">图表3标题</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="echart3title" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">图表4数据列</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="echart4channelname" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">图表4标题</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="echart4title" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">图表5数据列</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="echart5channelname" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">图表5标题</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="echart5title" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">图表6数据列</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="echart6channelname" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">图表6标题</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="echart6title" placeholder="必填项" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+    </form>
+    <script>
+
+        layui.use(['element', 'layer', 'form', 'laydate'], function () {
+            var element = layui.element;
+            var $ = layui.jquery;
+            layer = layui.layer;
+
+            var form = layui.form;
+
+
+        });
+
+
+    </script>
+
+</body>
+</html>
+
