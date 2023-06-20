@@ -84,18 +84,25 @@
                     <a href="">数据预测</a>
                     <dl class="layui-nav-child" id="dataprediction">
                       
-
                     </dl>
                 </li>
                 <li class="layui-nav-item">
-                    <a href="">数据分析</a>
+                    <a href="">PUMA分析</a>
+                    <dl class="layui-nav-child" id="mileageanalysis">
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="">正常分析</a>
                     <dl class="layui-nav-child" id="dataanalysis">
-                        @*<dd><a href="@Url.Action("DataAnalysis", "ADF0979")"> ADF0979</a></dd>*@
-
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="" >PUMA导入</a>
+                    <dl class="layui-nav-child" id="mileageimport">
                     </dl>
                 </li>
                 <li class="layui-nav-item" >
-                    <a href="" id="dataimporta">数据导入</a>
+                    <a href="" id="dataimporta">正常导入</a>
                     <dl class="layui-nav-child" id="dataimport">
 
                     </dl>
@@ -103,19 +110,10 @@
                 <li class="layui-nav-item" >
                     <a href="" id="datadeletea">数据删除</a>
                     <dl class="layui-nav-child" id="datadelete">
-
                     </dl>
                 </li>
             </ul>
             <ul class="layui-nav layui-layout-right">
-               @* <li class="layui-nav-item">
-                    <a href="">工具</a>
-                    <dl class="layui-nav-child" id="tools">
-                        <dd><a href="@Url.Action("CSVCombinebyTime", "Home")">合并CSV-Time</a></dd>
-                        <dd><a href="@Url.Action("CSVCombinebyTxt", "Home")">合并CSV-TXT</a></dd>
-                      
-                    </dl>
-                </li>*@
                 <li class="layui-nav-item">
                     <a href="">设置</a>
                     <dl class="layui-nav-child" id="vehiclesetup">
@@ -172,72 +170,82 @@
             dataType: 'json',
             type: 'post',
             success: function (data) {
+                    if (data.length > 0) {
+                        var vehicledl1 = document.getElementById("vehiclemonitor");
+                        var vehicledl2 = document.getElementById("dataimport");
+                        var vehicledl3 = document.getElementById("dataanalysis");
+                        var vehicledl4 = document.getElementById("dataprediction");
+                        var vehicledl5 = document.getElementById("datadelete");
 
-                if (data.length > 0) {
-                    
-                    var vehicledl1 = document.getElementById("vehiclemonitor");
-                    var vehicledl2 = document.getElementById("dataimport");
-                    var vehicledl3 = document.getElementById("dataanalysis");
-                    var vehicledl4 = document.getElementById("dataprediction");
-                    var vehicledl5=document.getElementById("datadelete");
-                
-                    for (var i = 0; i < data.length; i++) {
-                        var item = data[i];
-                        var dd1 = document.createElement("dd");
-                        var dd2 = document.createElement("dd");
-                        var dd3 = document.createElement("dd");
-                        var dd4 = document.createElement("dd");
-                        var dd5 = document.createElement("dd");
+                        var vehicledl6 = document.getElementById("mileageanalysis");
+                        var vehicledl7 = document.getElementById("mileageimport");
+                        for (var i = 0; i < data.length; i++) {
+                            var item = data[i];
+                            var dd1 = document.createElement("dd");
+                            var dd2 = document.createElement("dd");
+                            var dd3 = document.createElement("dd");
+                            var dd4 = document.createElement("dd");
+                            var dd5 = document.createElement("dd");
+                            var dd6 = document.createElement("dd");
+                            var dd7 = document.createElement("dd");
 
-                     
-                        a1 = document.createElement('a');
-                        a2 = document.createElement('a');
+                            a1 = document.createElement('a');
+                            a2 = document.createElement('a');
 
-                        a3 = document.createElement('a');
-                        a4 = document.createElement('a');
-                        a5 = document.createElement('a');
-                      
-                        a1.href = "/Html/WatchHtml/index.html?id=" + item;
-                        
-                        a1.target = '_blank';
-                        a1.target = "/Html/WatchHtml/index.html?id=" + item;
+                            a3 = document.createElement('a');
+                            a4 = document.createElement('a');
+                            a5 = document.createElement('a');
+                            a6 = document.createElement('a');
+                            a7 = document.createElement('a');
+                            a1.href = "/Html/WatchHtml/index.html?id=" + item;
 
-                        a2.href = "/Html/ImportHtml/ImportData.html?id="+item;
-                        a2.target = "/Html/ImportHtml/ImportData.html?id=" + item;
+                            a1.target = '_blank';
+                            a1.target = "/Html/WatchHtml/index.html?id=" + item;
 
-                        a3.href = "/Html/AnalysisHtml/Analysis.html?id=" + item;
-                        a3.target = "/Html/AnalysisHtml/Analysis.html?id=" + item;
+                            a2.href = "/Html/ImportHtml/ImportData.html?id=" + item;
+                            a2.target = "/Html/ImportHtml/ImportData.html?id=" + item;
 
-                        a4.href = "/Html/PredictionHtml/Prediction.html?id=" + item;
-                        a4.target = "/Html/PredictionHtml/Prediction.html?id=" + item;
+                            a3.href = "/Html/AnalysisHtml/Analysis.html?id=" + item;
+                            a3.target = "/Html/AnalysisHtml/Analysis.html?id=" + item;
 
-                        a5.href = "/Html/DeleteHtml/DeleteData.html?id=" + item;
-                        a5.target = "/Html/DeleteHtml/DeleteData.html?iid=" + item;
+                            a4.href = "/Html/PredictionHtml/Prediction.html?id=" + item;
+                            a4.target = "/Html/PredictionHtml/Prediction.html?id=" + item;
 
-                        a1.innerText = item;
-                        a2.innerText = item;
-                        a3.innerText = item;
-                        a4.innerText = item;
-                         a5.innerText = item;
-                        dd1.appendChild(a1);
-                        dd2.appendChild(a2);
-                        dd3.appendChild(a3);
-                        dd4.appendChild(a4);
-                         dd5.appendChild(a5);
-                        vehicledl1.appendChild(dd1);
-                        vehicledl2.appendChild(dd2);
-                        vehicledl3.appendChild(dd3);
-                        vehicledl4.appendChild(dd4);
-                     vehicledl5.appendChild(dd5);
+                            a5.href = "/Html/DeleteHtml/DeleteData.html?id=" + item;
+                            a5.target = "/Html/DeleteHtml/DeleteData.html?iid=" + item;
+
+                            a6.href = "/Html/AnalysisHtml/MileageAnalysis.html?id=" + item;
+                            a6.target = "/Html/AnalysisHtml/MileageAnalysis.html?iid=" + item;
+                            a7.href = "/Html/ImportHtml/MileageImportData.html?id=" + item;
+                            a7.target = "/Html/ImportHtml/MileageImportData.html?id=" + item;
+
+                            a1.innerText = item;
+                            a2.innerText = item;
+                            a3.innerText = item;
+                            a4.innerText = item;
+                            a5.innerText = item;
+                            a6.innerText = item;
+                            a7.innerText = item;
+                            dd1.appendChild(a1);
+                            dd2.appendChild(a2);
+                            dd3.appendChild(a3);
+                            dd4.appendChild(a4);
+                            dd5.appendChild(a5);
+                            dd6.appendChild(a6);
+                            dd7.appendChild(a7);
+                            vehicledl1.appendChild(dd1);
+                            vehicledl2.appendChild(dd2);
+                            vehicledl3.appendChild(dd3);
+                            vehicledl4.appendChild(dd4);
+                            vehicledl5.appendChild(dd5);
+                            vehicledl6.appendChild(dd6);
+                            vehicledl7.appendChild(dd7);
+                        }
+
+
+
                     }
-
-                  
-
-                }
-
-
-
-                //重新渲染 固定写法
+                    //重新渲染 固定写法
             }
         });
 

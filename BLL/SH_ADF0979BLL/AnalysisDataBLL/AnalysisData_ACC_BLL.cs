@@ -60,15 +60,7 @@ namespace BLL.SH_ADF0979BLL
                      filenamemax= list.Where(s=>s.Max== x.Max(a => a.Max)).FirstOrDefault().Filename,
                      filenamemin = list.Where(s => s.Min == x.Min(a => a.Min)).FirstOrDefault().Filename
                  }).OrderBy(b => b.chantitle).ToList();
-
-            //var accanddislist = await Task.Run(() => CurrentDal.LoadEntities(a => a.Datadate >= sd && a.Datadate <= ed && a.VehicleId == vehicleid, vehicleid).GroupBy(x =>
-            //     x.Chantitle).Select(x => new
-            //     {
-            //         chantitle = x.Key,
-            //         max = x.Max(a => a.Max),
-            //         min = x.Min(a => a.Min),
-            //     }).Where(a => a.chantitle.Contains("acc") || a.chantitle.Contains("dis")).ToList());//.OrderBy(b => b.chantitle)
-
+                     
             return maxminlist.AsQueryable();
         }
 

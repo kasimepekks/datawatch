@@ -11,7 +11,8 @@
           "Microsoft.AspNetCore.Http.Features": "5.0.4",
           "Microsoft.Extensions.Configuration.Json": "5.0.0",
           "MysqlforDataWatch": "1.0.0",
-          "RainFlowandDamageTool": "1.0.1"
+          "RG.CsvSerializer": "1.0.10",
+          "RainFlowandDamageTool": "1.0.2"
         },
         "runtime": {
           "Tools.dll": {}
@@ -262,11 +263,30 @@
           }
         }
       },
-      "RainFlowandDamageTool/1.0.1": {
+      "RainFlowandDamageTool/1.0.2": {
         "runtime": {
           "lib/netcoreapp3.1/RainFlowandDamageTool.dll": {
-            "assemblyVersion": "1.0.1.0",
-            "fileVersion": "1.0.1.0"
+            "assemblyVersion": "1.0.2.0",
+            "fileVersion": "1.0.2.0"
+          }
+        }
+      },
+      "RG.CsvSerializer/1.0.10": {
+        "dependencies": {
+          "RG.Missil": "1.0.12"
+        },
+        "runtime": {
+          "lib/netcoreapp3.0/CsvSerializer.dll": {
+            "assemblyVersion": "1.0.10.0",
+            "fileVersion": "1.0.10.0"
+          }
+        }
+      },
+      "RG.Missil/1.0.12": {
+        "runtime": {
+          "lib/netcoreapp3.0/Missil.dll": {
+            "assemblyVersion": "1.0.12.0",
+            "fileVersion": "1.0.12.0"
           }
         }
       },
@@ -505,12 +525,26 @@
       "path": "pomelo.entityframeworkcore.mysql/5.0.0",
       "hashPath": "pomelo.entityframeworkcore.mysql.5.0.0.nupkg.sha512"
     },
-    "RainFlowandDamageTool/1.0.1": {
+    "RainFlowandDamageTool/1.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-/cqlDFnq3I6+8dviTw3idDmRq8TuOidQnR7nhVXH0TUMd2nLducpPeo3y9l69o/ir8+NLKMAuocnYqwMZ4g+uQ==",
-      "path": "rainflowanddamagetool/1.0.1",
-      "hashPath": "rainflowanddamagetool.1.0.1.nupkg.sha512"
+      "sha512": "sha512-kTLAgnpeY0v37y9vDVOFH57p6oBEZtniRRnSIos5soTYt9qhKK+eLmQdSb9IPe5z6hpjVmqZ1MapNPsk+L1Nxw==",
+      "path": "rainflowanddamagetool/1.0.2",
+      "hashPath": "rainflowanddamagetool.1.0.2.nupkg.sha512"
+    },
+    "RG.CsvSerializer/1.0.10": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-lZ2laBmBgzCAGUqKTHDglsZTejPAjGFRrHqfLBbeHts8tTTGRb4yXodQDAE8/otfbG4ertTH+R9ZCMlXaX3adg==",
+      "path": "rg.csvserializer/1.0.10",
+      "hashPath": "rg.csvserializer.1.0.10.nupkg.sha512"
+    },
+    "RG.Missil/1.0.12": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-XOCNn17+p4zHPXPj1waxj6XfJc78DrmQpfXFAMUZENwX8+jBJXqN7gp2WOpgyMFgx8fq4bCXNdd2wfz7W/0fpA==",
+      "path": "rg.missil/1.0.12",
+      "hashPath": "rg.missil.1.0.12.nupkg.sha512"
     },
     "System.Collections.Immutable/5.0.0": {
       "type": "package",

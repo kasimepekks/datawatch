@@ -28,6 +28,7 @@ namespace Tools.MyConfig
         public byte reductiontimesforgps { get; set; }
         public int gpspointsforanalysis { get; set; }
         public byte GPSImport { get; set; }
+        public byte importpuma { get; set; }
         public byte BrakeImport { get; set; }
         public byte ThrottleImport { get; set; }
         public byte SpeedImport { get; set; }
@@ -35,6 +36,7 @@ namespace Tools.MyConfig
         public byte BumpImport { get; set; }
         public byte SteeringImport { get; set; }
         public byte WFTImport { get; set; }
+        public byte importengspd { get; set; }
         public byte monitoraccess { get; set; }
         public byte analysisaccess { get; set; }
         public byte importaccess { get; set; }
@@ -49,5 +51,6 @@ namespace Tools.MyConfig
         public string acczwhllr { get; set; }
         public string accybody { get; set; }
         public string accxbody { get; set; }
+        public string enginespeed { get; set; }
     }
 }

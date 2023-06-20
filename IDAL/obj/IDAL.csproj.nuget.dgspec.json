@@ -189,9 +189,13 @@
               "target": "Package",
               "version": "[5.0.0, )"
             },
+            "RG.CsvSerializer": {
+              "target": "Package",
+              "version": "[1.0.10, )"
+            },
             "RainFlowandDamageTool": {
               "target": "Package",
-              "version": "[1.0.1, )"
+              "version": "[1.0.2, )"
             }
           },
           "imports": [

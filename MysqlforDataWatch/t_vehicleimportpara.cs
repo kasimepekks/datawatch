@@ -23,6 +23,9 @@ namespace MysqlforDataWatch
         public byte importimpact { get; set; }
         public byte importsteering { get; set; }
         public byte importwft { get; set; }
+        public byte importengspd { get; set; }
+
+        public byte importpuma { get; set; }
         public string speedcolumnname { get; set; }
         public string throttlecolumnname { get; set; }
         public string brakecolumnname { get; set; }
@@ -33,5 +36,6 @@ namespace MysqlforDataWatch
         public string acczwhllr { get; set; }
         public string accybody { get; set; }
         public string accxbody { get; set; }
+        public string enginespeed { get; set; }
     }
 }

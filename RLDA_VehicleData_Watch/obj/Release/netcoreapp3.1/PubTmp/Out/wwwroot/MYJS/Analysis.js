@@ -5,9 +5,9 @@ layui.use(['element', 'layer', 'laydate', 'table', 'form'], function () {
     var $ = layui.jquery;
     layer = layui.layer;
     
-    var element = layui.element;
+    //var element = layui.element;
     var laydate = layui.laydate;
-    var datevalue, startdate, enddate, brakecount, bumpcount;
+    var datevalue, startdate, enddate;
     var a = GetRequest();
     laydate.render({
         elem: '#startend'
@@ -26,6 +26,7 @@ layui.use(['element', 'layer', 'laydate', 'table', 'form'], function () {
 
     });
 
+    //先查看有没有分析权限
     $.ajax({
 
         type: "POST",
@@ -446,6 +447,321 @@ layui.use(['element', 'layer', 'laydate', 'table', 'form'], function () {
                 }
 
             });
+            //转速里程分布
+            $.ajax({
+
+                type: "POST",
+                //请求的媒体类型
+                dataType: 'json',
+                //请求地址
+                url: urlgetengspddis,
+                data: {
+                    startdate: startdate,
+
+                    enddate: enddate,
+                    vehicleid: a['id']
+                },
+                success: function (data) {
+                    if (data.length != 0) {
+                        var item = data[0];
+                        var time = "time";
+                       
+                        var sum0_1000 = "sum0_1000";
+                        var sum1000_1500 = "sum1000_1500";
+                        var sum1500_2000 = "sum1500_2000";
+                        var sum2000_2500 = "sum2000_2500";
+                        var sum2500_3000 = "sum2500_3000";
+                        var sum3000_4000 = "sum3000_4000";
+                        var sum4000_5000 = "sum4000_5000";
+                        var sum5000_6000 = "sum5000_6000";
+                        var sumabove6000 = "sumabove6000";
+                      
+
+                        var TotalDis = 0;
+                        //第一个data是给直方图用的
+                        var speeddata = [];
+                        speeddata.push(item[sum0_1000] / 1000);
+                        speeddata.push(item[sum1000_1500] / 1000);
+                        speeddata.push(item[sum1500_2000] / 1000);
+                        speeddata.push(item[sum2000_2500] / 1000);
+                        speeddata.push(item[sum2500_3000] / 1000);
+                        speeddata.push(item[sum3000_4000] / 1000);
+                        speeddata.push(item[sum4000_5000] / 1000);
+                        speeddata.push(item[sum5000_6000] / 1000);
+                        speeddata.push(item[sumabove6000] / 1000);
+
+                        var sumtitle = [];
+                        sumtitle.push(sum0_1000);
+                        sumtitle.push(sum1000_1500);
+                        sumtitle.push(sum1500_2000);
+                        sumtitle.push(sum2000_2500);
+                        sumtitle.push(sum2500_3000);
+                        sumtitle.push(sum3000_4000);
+                        sumtitle.push(sum4000_5000);
+                        sumtitle.push(sum5000_6000);
+                        sumtitle.push(sumabove6000);
+                   
+
+                        for (var i in speeddata) {
+                            TotalDis += speeddata[i]
+                        }
+
+                        var speedpiedata = [];
+                        for (var i = 0; i < speeddata.length; i++) {
+                            speedpiedata.push([sumtitle[i], speeddata[i]]);
+                        }
+                        Highcharts.chart('engspddiscollumncontainer', {
+                            chart: {
+
+                                type: 'column',
+                                zoomType: 'x'
+                            },
+                            credits: {
+                                enabled: false // 禁用版权信息
+                            },
+                            title: {
+                                text: '转速里程分布图',
+
+                            },
+                            subtitle: {
+                                text: "总里程：" + TotalDis.toFixed(1) + " 公里"
+                            },
+                            xAxis: {
+                                categories: [
+                                    '0到1000', '1000到1500', '1500到2000', '2000到2500', '2500到3000', '3000到4000', '4000到5000', '5000到6000', '6000以上'],
+                            },
+                            yAxis: {
+                                title: {
+                                    text: '公里'
+                                }
+                            },
+                            tooltip: {
+                                shared: true,
+                                pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.1f}</b><br/>'
+                            },
+                            plotOptions: {
+                                column: {
+                                    borderWidth: 0
+                                }
+                            },
+                            series: [{
+                                name: '里程',
+                                data: eval(speeddata)
+                            }]
+
+                        });
+
+                        Highcharts.chart('engspddisbarcontainer', {
+                            chart: {
+                                plotBackgroundColor: null,
+                                plotBorderWidth: null,
+                                plotShadow: false,
+                                type: 'pie'
+                            },
+
+                            credits: {
+                                enabled: false // 禁用版权信息
+                            },
+                            title: {
+                                text: "转速里程占比图"
+                            },
+                            subtitle: {
+                                text: item[time]
+                            },
+                            tooltip: {
+                                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                            },
+                            plotOptions: {
+                                pie: {
+                                    allowPointSelect: true,
+                                    cursor: 'pointer',
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                        style: {
+                                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                        }
+                                    },
+                                }
+                            },
+                            series: [{
+                                name: '转速',
+                                colorByPoint: true,
+                                data: eval(speedpiedata)
+                            }],
+                            exporting: {
+                                width: 1000
+                            }
+                        });
+                    }
+                    else {
+                        layer.close(index);
+                    }
+
+                }
+                , error: function (e) {
+                    layer.msg(e);
+                }
+
+            });
+
+            //转速时间分布
+            $.ajax({
+
+                type: "POST",
+                //请求的媒体类型
+                dataType: 'json',
+                //请求地址
+                url: urlgetengspdtime,
+                data: {
+                    startdate: startdate,
+
+                    enddate: enddate,
+                    vehicleid: a['id']
+                },
+                success: function (data) {
+                    if (data.length != 0) {
+                        var item = data[0];
+                        var time = "time";
+
+                        var sum0_1000 = "sum0_1000";
+                        var sum1000_1500 = "sum1000_1500";
+                        var sum1500_2000 = "sum1500_2000";
+                        var sum2000_2500 = "sum2000_2500";
+                        var sum2500_3000 = "sum2500_3000";
+                        var sum3000_4000 = "sum3000_4000";
+                        var sum4000_5000 = "sum4000_5000";
+                        var sum5000_6000 = "sum5000_6000";
+                        var sumabove6000 = "sumabove6000";
+
+
+                        var TotalTime = 0;
+                        //第一个data是给直方图用的
+                        var speeddata = [];
+                        speeddata.push(item[sum0_1000] / 512);
+                        speeddata.push(item[sum1000_1500] / 512);
+                        speeddata.push(item[sum1500_2000] / 512);
+                        speeddata.push(item[sum2000_2500] / 512);
+                        speeddata.push(item[sum2500_3000] / 512);
+                        speeddata.push(item[sum3000_4000] / 512);
+                        speeddata.push(item[sum4000_5000] / 512);
+                        speeddata.push(item[sum5000_6000] / 512);
+                        speeddata.push(item[sumabove6000] / 512);
+
+                        var sumtitle = [];
+                        sumtitle.push(sum0_1000);
+                        sumtitle.push(sum1000_1500);
+                        sumtitle.push(sum1500_2000);
+                        sumtitle.push(sum2000_2500);
+                        sumtitle.push(sum2500_3000);
+                        sumtitle.push(sum3000_4000);
+                        sumtitle.push(sum4000_5000);
+                        sumtitle.push(sum5000_6000);
+                        sumtitle.push(sumabove6000);
+
+
+                        for (var i in speeddata) {
+                            TotalTime += speeddata[i]
+                        }
+
+                        var speedpiedata = [];
+                        for (var i = 0; i < speeddata.length; i++) {
+                            speedpiedata.push([sumtitle[i], speeddata[i]]);
+                        }
+                        Highcharts.chart('engspdtimecollumncontainer', {
+                            chart: {
+
+                                type: 'column',
+                                zoomType: 'x'
+                            },
+                            credits: {
+                                enabled: false // 禁用版权信息
+                            },
+                            title: {
+                                text: '转速时间分布图',
+
+                            },
+                            subtitle: {
+                                text: "总时间：" + TotalTime.toFixed(1) + " 秒"
+                            },
+                            xAxis: {
+                                categories: [
+                                    '0到1000', '1000到1500', '1500到2000', '2000到2500', '2500到3000', '3000到4000', '4000到5000', '5000到6000', '6000以上'],
+                            },
+                            yAxis: {
+                                title: {
+                                    text: '时间秒'
+                                }
+                            },
+                            tooltip: {
+                                shared: true,
+                                pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.1f}</b><br/>'
+                            },
+                            plotOptions: {
+                                column: {
+                                    borderWidth: 0
+                                }
+                            },
+                            series: [{
+                                name: '时间',
+                                data: eval(speeddata)
+                            }]
+
+                        });
+
+                        Highcharts.chart('engspdtimebarcontainer', {
+                            chart: {
+                                plotBackgroundColor: null,
+                                plotBorderWidth: null,
+                                plotShadow: false,
+                                type: 'pie'
+                            },
+
+                            credits: {
+                                enabled: false // 禁用版权信息
+                            },
+                            title: {
+                                text: "转速时间占比图"
+                            },
+                            subtitle: {
+                                text: item[time]
+                            },
+                            tooltip: {
+                                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                            },
+                            plotOptions: {
+                                pie: {
+                                    allowPointSelect: true,
+                                    cursor: 'pointer',
+                                    dataLabels: {
+                                        enabled: true,
+                                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                        style: {
+                                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                        }
+                                    },
+                                }
+                            },
+                            series: [{
+                                name: '转速',
+                                colorByPoint: true,
+                                data: eval(speedpiedata)
+                            }],
+                            exporting: {
+                                width: 1000
+                            }
+                        });
+                    }
+                    else {
+                        layer.close(index);
+                    }
+
+                }
+                , error: function (e) {
+                    layer.msg(e);
+                }
+
+            });
 
             //轨迹
             $.ajax({
@@ -756,7 +1072,17 @@ layui.use(['element', 'layer', 'laydate', 'table', 'form'], function () {
                     vehicleid: a['id']
                 },
                 success: function (data) {
-                    if (data.length!=0) {
+                    console.log(data);
+                    if (data.length != 0) {
+                        var maxfilename = [];
+                        var minfilename = [];
+                        var maxfilenameX = [];
+                        var maxfilenameY = [];
+                        var maxfilenameZ = [];
+                        var minfilenameX = [];
+                        var minfilenameY = [];
+                        var minfilenameZ = [];
+
                         var LFdamage = [];
                         var RFdamage = [];
                         var LRdamage = [];
@@ -771,30 +1097,74 @@ layui.use(['element', 'layer', 'laydate', 'table', 'form'], function () {
                         var RFmin = [];
                         var LRmin = [];
                         var RRmin = [];
+
+                        var LFdamageK3 = [];
+                        var RFdamageK3 = [];
+                        var LRdamageK3 = [];
+                        var RRdamageK3 = [];
+
+                       
                         //var chantitle = [];
                         for (var i = 0; i < data.length; i++) {
                             var item = data[i];
+                            //选取LF,RF,LR,RR的X方向的文件名
+                            if (item["chantitle"].includes("wftfxlf") || item["chantitle"].includes("wftfxrf") || item["chantitle"].includes("wftfxlr") || item["chantitle"].includes("wftfxrr")) {
+                                maxfilenameX.push(item["filenamemax"])
+                                minfilenameX.push(item["filenamemin"])
+                            }
+                            if (item["chantitle"].includes("wftfylf") || item["chantitle"].includes("wftfyrf") || item["chantitle"].includes("wftfylr") || item["chantitle"].includes("wftfyrr")) {
+                                console.log(i);
+                                maxfilenameY.push(item["filenamemax"])
+                                minfilenameY.push(item["filenamemin"])
+                            }
+                            if (item["chantitle"].includes("wftfzlf") || item["chantitle"].includes("wftfzrf") || item["chantitle"].includes("wftfzlr") || item["chantitle"].includes("wftfzrr")) {
+                                maxfilenameZ.push(item["filenamemax"])
+                                minfilenameZ.push(item["filenamemin"])
+                            }
                             if (item["chantitle"] == "wftfxlf" || item["chantitle"] == "wftfylf" || item["chantitle"] == "wftfzlf") {
-                                LFdamage.push(item["damage"]);
+                                LFdamage.push(item["damagek5"]);
+                                LFdamageK3.push(item["damagek3"]);
                                 LFmax.push(item["max"]);
                                 LFmin.push(item["min"]);
                             }
                             if (item["chantitle"] == "wftfxrf" || item["chantitle"] == "wftfyrf" || item["chantitle"] == "wftfzrf") {
-                                RFdamage.push(item["damage"]);
+                                RFdamage.push(item["damagek5"]);
+                                RFdamageK3.push(item["damagek3"]);
                                 RFmax.push(item["max"]);
                                 RFmin.push(item["min"]);
                             }
                             if (item["chantitle"] == "wftfxlr" || item["chantitle"] == "wftfylr" || item["chantitle"] == "wftfzlr") {
-                                LRdamage.push(item["damage"]);
+                                LRdamage.push(item["damagek5"]);
+                                LRdamageK3.push(item["damagek3"]);
                                 LRmax.push(item["max"]);
                                 LRmin.push(item["min"]);
                             }
                             if (item["chantitle"] == "wftfxrr" || item["chantitle"] == "wftfyrr" || item["chantitle"] == "wftfzrr") {
-                                RRdamage.push(item["damage"]);
+                                RRdamage.push(item["damagek5"]);
+                                RRdamageK3.push(item["damagek3"]);
                                 RRmax.push(item["max"]);
                                 RRmin.push(item["min"]);
                             }
                         }
+
+                      
+                        //数组交换第二第三个元素位置，由于先获取的是LR的数据，然后才是RF的数据，所以需要交换
+                        [maxfilenameX[1], maxfilenameX[2]] = [maxfilenameX[2], maxfilenameX[1]];
+                        [maxfilenameY[1], maxfilenameY[2]] = [maxfilenameY[2], maxfilenameY[1]];
+                        [maxfilenameZ[1], maxfilenameZ[2]] = [maxfilenameZ[2], maxfilenameZ[1]];
+
+                        //组成一个二维数组，把X,Y,Z的max的文件名称都放到一个二维数组中
+                        maxfilename[0] = maxfilenameX;//LF,RF,LR,RR的X方向的加速度最大值的文件名数组放入另一个数组内
+                        maxfilename[1] = maxfilenameY;
+                        maxfilename[2] = maxfilenameZ;
+
+                        [minfilenameX[1], minfilenameX[2]] = [minfilenameX[2], minfilenameX[1]];
+                        [minfilenameY[1], minfilenameY[2]] = [minfilenameY[2], minfilenameY[1]];
+                        [minfilenameZ[1], minfilenameZ[2]] = [minfilenameZ[2], minfilenameZ[1]];
+                        //组成一个二维数组，把X,Y,Z的minx的文件名称都放到一个二维数组中
+                        minfilename[0] = minfilenameX;
+                        minfilename[1] = minfilenameY;
+                        minfilename[2] = minfilenameZ;
 
                         Highcharts.chart('WFTcolumncontainer', {
                             chart: {
@@ -806,7 +1176,7 @@ layui.use(['element', 'layer', 'laydate', 'table', 'form'], function () {
                                 enabled: false // 禁用版权信息
                             },
                             title: {
-                                text: '轮心力累积损伤',
+                                text: '轮心力累积损伤K5',
 
                             },
                             subtitle: {
@@ -820,13 +1190,13 @@ layui.use(['element', 'layer', 'laydate', 'table', 'form'], function () {
                             yAxis: {
 
                                 title: {
-                                    text: '损伤'
+                                    text: '损伤K5'
                                 }
                             },
                             tooltip: {
                                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                                 pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} damage</b></td></tr>',
+                                    '<td style="padding:0"><b>{point.y:.1f} damagek5</b></td></tr>',
                                 footerFormat: '</table>',
                                 shared: true,
                                 useHTML: true
@@ -850,6 +1220,61 @@ layui.use(['element', 'layer', 'laydate', 'table', 'form'], function () {
                                 data: eval(RRdamage)
                             }]
                         });
+                        Highcharts.chart('WFTcolumncontainerK3', {
+                            chart: {
+
+                                type: 'column',
+
+                            },
+                            credits: {
+                                enabled: false // 禁用版权信息
+                            },
+                            title: {
+                                text: '轮心力累积损伤K3',
+
+                            },
+                            subtitle: {
+                                text: startdate + "to" + enddate
+                            },
+                            xAxis: {
+                                categories: ['X', 'Y', 'Z'],
+                                crosshair: true
+
+                            },
+                            yAxis: {
+
+                                title: {
+                                    text: '损伤K3'
+                                }
+                            },
+                            tooltip: {
+                                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                                    '<td style="padding:0"><b>{point.y:.1f} damagek3</b></td></tr>',
+                                footerFormat: '</table>',
+                                shared: true,
+                                useHTML: true
+                            },
+                            plotOptions: {
+                                column: {
+                                    borderWidth: 0
+                                }
+                            },
+                            series: [{
+                                name: "LF",
+                                data: eval(LFdamageK3)
+                            }, {
+                                name: "RF",
+                                data: eval(RFdamageK3)
+                            }, {
+                                name: "LR",
+                                data: eval(LRdamageK3)
+                            }, {
+                                name: "RR",
+                                data: eval(RRdamageK3)
+                            }]
+                        });
+
 
                         Highcharts.chart('WFTcolumncontainerMax', {
                             chart: {
@@ -880,8 +1305,11 @@ layui.use(['element', 'layer', 'laydate', 'table', 'form'], function () {
                             },
                             tooltip: {
                                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} 最大值</b></td></tr>',
+                                pointFormatter: function () {
+                                    /* console.log(this)*/
+                                    return '<tr><td style="color:{' + this.series.color + '};padding:0">' + this.series.name + ': </td>' +
+                                        '<td style="padding:0"><b>' + this.y.toFixed(1) + '  文件名称：' + maxfilename[this.index][this.colorIndex] + '</b></td></tr>'
+                                },
                                 footerFormat: '</table>',
                                 shared: true,
                                 useHTML: true
@@ -938,8 +1366,11 @@ layui.use(['element', 'layer', 'laydate', 'table', 'form'], function () {
                             },
                             tooltip: {
                                 headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                                    '<td style="padding:0"><b>{point.y:.1f} 最小值</b></td></tr>',
+                                pointFormatter: function () {
+                                    /* console.log(this)*/
+                                    return '<tr><td style="color:{' + this.series.color + '};padding:0">' + this.series.name + ': </td>' +
+                                        '<td style="padding:0"><b>' + this.y.toFixed(1) + '  文件名称：' + minfilename[this.index][this.colorIndex] + '</b></td></tr>'
+                                },
                                 footerFormat: '</table>',
                                 shared: true,
                                 useHTML: true
@@ -1015,7 +1446,7 @@ layui.use(['element', 'layer', 'laydate', 'table', 'form'], function () {
 
                         var maxfilename_st = [];
                         var minfilename_st = [];
-
+                        //拉线位移最大最小文件名
                         var maxfilename_stdis = [];
                         var minfilename_stdis = [];
 
@@ -1149,7 +1580,7 @@ layui.use(['element', 'layer', 'laydate', 'table', 'form'], function () {
                         [maxfilenameZ[1], maxfilenameZ[2]] = [maxfilenameZ[2], maxfilenameZ[1]];
 
                         //组成一个二维数组，把X,Y,Z的max的文件名称都放到一个二维数组中
-                        maxfilename[0] = maxfilenameX;
+                        maxfilename[0] = maxfilenameX;//LF,RF,LR,RR的X方向的加速度最大值的文件名数组放入另一个数组内
                         maxfilename[1] = maxfilenameY;
                         maxfilename[2] = maxfilenameZ;
                      

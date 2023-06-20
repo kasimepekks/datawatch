@@ -40,16 +40,38 @@ namespace BLL.SH_ADF0979BLL
         }
         public async Task<IQueryable> LoadWFTDamage(DateTime sd, DateTime ed, string vehicleid)
         {
-           
-            var damagelist = await Task.Run(() => _AnalysisData_WFT_DAL.LoadEntities(a => a.Datadate >= sd && a.Datadate <= ed && a.VehicleId == vehicleid, vehicleid).GroupBy(x =>
-                 x.Chantitle).Select(x => new
-                 {
-                     chantitle = x.Key,
-                     damage = x.Sum(a => a.Damage),
-                     max = x.Max(a => a.Max),
-                     min = x.Min(a => a.Min)
-                 }).Where(a => a.chantitle.Contains("WFTF")).ToList().OrderBy(b => b.chantitle));
-            return damagelist.AsQueryable();
+            var damagelist = await Task.Run(() => CurrentDal.LoadEntities(a => a.Datadate >= sd && a.Datadate <= ed
+     && a.VehicleId == vehicleid, vehicleid).Select(a => new
+     {
+         a.Chantitle,
+         a.DamageK3,
+         a.DamageK5,
+         a.Max,
+         a.Min,
+         a.Filename
+     }));
+            var maxmindamlist = damagelist.GroupBy(x =>
+                x.Chantitle).Select(x => new
+                {
+                    chantitle = x.Key,
+                    damagek5 = x.Sum(a => a.DamageK5),
+                    damagek3 = x.Sum(a => a.DamageK3),
+                    max = x.Max(a => a.Max),
+                    min = x.Min(a => a.Min),
+                    filenamemax = damagelist.Where(s => s.Max == x.Max(a => a.Max)).FirstOrDefault().Filename,
+                    filenamemin = damagelist.Where(s => s.Min == x.Min(a => a.Min)).FirstOrDefault().Filename
+                }).Where(a => a.chantitle.Contains("WFTF") || a.chantitle.Contains("wftf")).ToList().OrderBy(b => b.chantitle);
+            return maxmindamlist.AsQueryable();
+            //var damagelist = await Task.Run(() => CurrentDal.LoadEntities(a => a.Datadate >= sd && a.Datadate <= ed && a.VehicleId == vehicleid, vehicleid).GroupBy(x =>
+            //     x.Chantitle).Select(x => new
+            //     {
+            //         chantitle = x.Key,
+            //         damagek5 = x.Sum(a => a.DamageK5),
+            //         damagek3 = x.Sum(a => a.DamageK3),
+            //         max = x.Max(a => a.Max),
+            //         min = x.Min(a => a.Min)
+            //     }).Where(a => a.chantitle.Contains("WFTF")|| a.chantitle.Contains("wftf")).ToList().OrderBy(b => b.chantitle));
+            //return damagelist.AsQueryable();
         }
 
         public async Task<IQueryable> LoadWFTDamageCumulation(DateTime sd, DateTime ed,string vehicleid)
@@ -66,9 +88,9 @@ namespace BLL.SH_ADF0979BLL
             {
                 chantitle = x.Key.Chantitle,
                 datetime = x.Key.Year.ToString() + "-" + x.Key.Month.ToString() + "-" + x.Key.Day.ToString(),
-                damage = Math.Round((double)x.Sum(a => a.Damage), 0),
-
-            }).Where(a => a.chantitle.Contains("WFTF")).ToList().OrderBy(b => b.chantitle).ThenBy(b => b.datetime));
+                damagek5 = Math.Round((double)x.Sum(a => a.DamageK5), 0),
+                damagek3 = Math.Round((double)x.Sum(a => a.DamageK3), 0),
+            }).Where(a => a.chantitle.Contains("WFTF") || a.chantitle.Contains("wftf")).ToList().OrderBy(b => b.chantitle).ThenBy(b => b.datetime));
 
             return damagelist.AsQueryable();
         }

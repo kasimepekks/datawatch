@@ -713,8 +713,10 @@ D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcore
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\Highcharts-8.2.2\code\themes\sunset.js
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\Highcharts-8.2.2\code\themes\sunset.src.js
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\Html\AnalysisHtml\Analysis.html
+D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\Html\AnalysisHtml\MileageAnalysis.html
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\Html\DeleteHtml\DeleteData.html
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\Html\ImportHtml\ImportData.html
+D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\Html\ImportHtml\MileageImportData.html
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\Html\PopHtml\SelectEchartsChannel.html
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\Html\PredictionHtml\Prediction.html
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\Html\WatchHtml\index.html
@@ -888,10 +890,12 @@ D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcore
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\MYJS\CommonforDelete.js
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\MYJS\CommonforDisplayecharts.js
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\MYJS\CommonforPrediciton.js
+D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\MYJS\Commonforpumamileagedisplay.js
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\MYJS\DeleteData.js
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\MYJS\GPSConverttoBaidu.js
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\MYJS\ImportData.js
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\MYJS\LuShu_min.js
+D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\MYJS\Pumamileagedisplay.js
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\MYJS\WFTPrediction.js
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\Pictures\404.JPG
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\Pictures\bg.jpg
@@ -961,6 +965,8 @@ D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcore
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\Pomelo.AspNetCore.TimedJob.dll
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\Pomelo.EntityFrameworkCore.MySql.dll
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\RainFlowandDamageTool.dll
+D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\CsvSerializer.dll
+D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\Missil.dll
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\System.Collections.Immutable.dll
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\System.ComponentModel.Annotations.dll
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\System.Composition.AttributedModel.dll
@@ -1038,7 +1044,7 @@ D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcore
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\DAL.pdb
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\IBLL.pdb
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\IDAL.pdb
-D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\MysqlforDataWatch.pdb
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\Tools.pdb
+D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\MysqlforDataWatch.pdb
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\RLDA_VehicleData_Watch.Views.dll
 D:\VS_Project\SourceCode\data-monitor\RLDA_VehicleData_Watch\obj\Release\netcoreapp3.1\PubTmp\Out\RLDA_VehicleData_Watch.Views.pdb

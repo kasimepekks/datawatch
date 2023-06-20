@@ -16,6 +16,7 @@ namespace Tools.MyConfig
         }
         public VehicleIDPara GetDatafromSql(string vehicleid)
         {
+            
             var t_vehiclemaster = _db.Set<t_vehiclemaster>().AsNoTracking().Where(a => a.vehicleid == vehicleid).FirstOrDefault();
             var t_vehicleimportpara = _db.Set<t_vehicleimportpara>().AsNoTracking().Where(a => a.vehicleid == vehicleid).FirstOrDefault();
             var t_vehiclecomputepara = _db.Set<t_vehiclecomputepara>().AsNoTracking().Where(a => a.vehicleid == vehicleid).FirstOrDefault();
@@ -26,12 +27,14 @@ namespace Tools.MyConfig
                 vehicleidpara.AccValueGap = t_vehiclecomputepara.accvaluegap;
                 vehicleidpara.StatisticImport = t_vehicleimportpara.importstatistic;
                 vehicleidpara.SpeedImport = t_vehicleimportpara.importspeed;
+                vehicleidpara.importpuma = t_vehicleimportpara.importpuma;
                 vehicleidpara.GPSImport = t_vehicleimportpara.importgps;
                 vehicleidpara.BrakeImport = t_vehicleimportpara.importbrake;
                 vehicleidpara.BumpImport = t_vehicleimportpara.importimpact;
                 vehicleidpara.WFTImport = t_vehicleimportpara.importwft;
                 vehicleidpara.ThrottleImport = t_vehicleimportpara.importthrottle;
                 vehicleidpara.SteeringImport = t_vehicleimportpara.importsteering;
+                vehicleidpara.importengspd = t_vehicleimportpara.importengspd;
                 vehicleidpara.BmupZeroStandard = t_vehiclecomputepara.bumpzerostandard;
                 vehicleidpara.BumpMaxSpeed = t_vehiclecomputepara.bumpmaxspeed;
                 vehicleidpara.BumpTimeGap = t_vehiclecomputepara.bumptimegap;
@@ -51,7 +54,7 @@ namespace Tools.MyConfig
                 vehicleidpara.predictaccess = t_vehiclemaster.predictaccess;
                 vehicleidpara.gpspointsforanalysis = t_vehiclemaster.displaygpspoints;
                 vehicleidpara.samplerate = t_vehiclemaster.samplerate;
-               
+               vehicleidpara.importengspd= t_vehicleimportpara.importengspd;
                 vehicleidpara.reductiontimesforgps = t_vehicleimportpara.importgpsreductiontimes;
                 vehicleidpara.importresultpath = t_vehicleimportpara.importresultpath;
                 vehicleidpara.importinputpath = t_vehicleimportpara.importinputpath;
@@ -65,6 +68,7 @@ namespace Tools.MyConfig
                 vehicleidpara.brakecolumnname = String.IsNullOrEmpty(t_vehicleimportpara.brakecolumnname) ? "" : t_vehicleimportpara.brakecolumnname.Replace("_", "").Replace("N", "").Replace(" ", "").ToLower();
                 vehicleidpara.whlanggrcolumnname = String.IsNullOrEmpty(t_vehicleimportpara.whlanggrcolumnname) ? "" : t_vehicleimportpara.whlanggrcolumnname.Replace("_", "").Replace("N", "").Replace(" ", "").ToLower();
                 vehicleidpara.whlangcolumnname = String.IsNullOrEmpty(t_vehicleimportpara.whlangcolumnname) ? "" : t_vehicleimportpara.whlangcolumnname.Replace("_", "").Replace("N", "").Replace(" ", "").ToLower();
+                vehicleidpara.enginespeed = String.IsNullOrEmpty(t_vehicleimportpara.enginespeed) ? "" : t_vehicleimportpara.enginespeed.Replace("_", "").Replace("N", "").Replace(" ", "").ToLower();
                 return vehicleidpara;
             }
             else

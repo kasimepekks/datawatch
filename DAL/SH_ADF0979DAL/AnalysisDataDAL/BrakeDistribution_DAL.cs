@@ -31,7 +31,7 @@ namespace DAL.SH_ADF0979DAL
             var time = Convert.ToDateTime(file.Name.Split('-')[0].Replace("_", "-"));
             if (vehicleIDPara.BrakeImport == 1)
             {
-                var sqllist = _DB.Brakerecognitions.Where(a => a.Datadate > time && a.Datadate < time.AddDays(1)).Select(a => a.VehicleId).AsNoTracking().FirstOrDefault();
+                var sqllist = _DB.Brakerecognitions.Where(a => a.Datadate > time && a.Datadate < time.AddDays(1) && a.VehicleId == vehicleid).Select(a => a.VehicleId).AsNoTracking().FirstOrDefault();
                 if (string.IsNullOrEmpty(sqllist))
                 {
                     if (importstruct.Iscontinue)

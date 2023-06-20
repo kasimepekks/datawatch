@@ -24,6 +24,7 @@ namespace MysqlforDataWatch
         public virtual DbSet<Gpsrecord> Gpsrecords { get; set; }
         public virtual DbSet<SatictisAnalysisdataAcc> SatictisAnalysisdataAccs { get; set; }
         public virtual DbSet<SatictisAnalysisdataWft> SatictisAnalysisdataWfts { get; set; }
+        public virtual DbSet<Pumapermileage> Pumapermileages { get; set; }
         public virtual DbSet<Speeddistribution> Speeddistributions { get; set; }
         public virtual DbSet<Streeringrecognition> Streeringrecognitions { get; set; }
         public virtual DbSet<SysAuthority> SysAuthorities { get; set; }
@@ -34,6 +35,8 @@ namespace MysqlforDataWatch
         public virtual DbSet<t_vehiclemonitorpara> t_vehiclemonitorpara { get; set; }
         public virtual DbSet<t_vehicleimportpara> t_vehicleimportpara { get; set; }
         public virtual DbSet<t_vehiclecomputepara> t_vehiclecomputepara { get; set; }
+        public virtual DbSet<EngineRpmDistribution_Time> EngineRpmDistribution_Time { get; set; }
+        public virtual DbSet<EngineRpmDistribution_Distance> EngineRpmDistribution_Distance { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -146,6 +149,9 @@ namespace MysqlforDataWatch
                 entity.Property(e => e.Filename)
                     .HasMaxLength(64)
                     .HasColumnName("filename");
+                //entity.Property(e => e.fileindex)
+                //  .HasColumnType("int(20) unsigned")
+                //  .HasColumnName("fileindex");
 
                 entity.Property(e => e.Max)
                     .HasColumnType("double(20,5)")
@@ -180,9 +186,12 @@ namespace MysqlforDataWatch
                     .HasMaxLength(64)
                     .HasColumnName("chantitle");
 
-                entity.Property(e => e.Damage)
+                entity.Property(e => e.DamageK5)
                     .HasColumnType("double(30,10)")
-                    .HasColumnName("damage");
+                    .HasColumnName("damagek5");
+                entity.Property(e => e.DamageK3)
+                  .HasColumnType("double(30,10)")
+                  .HasColumnName("damagek3");
 
                 entity.Property(e => e.Datadate)
                     .HasColumnType("datetime")
@@ -213,6 +222,126 @@ namespace MysqlforDataWatch
                     .HasColumnName("VehicleID");
             });
 
+            modelBuilder.Entity<Pumapermileage>(entity =>
+            {
+                entity.ToTable("pumapermileage_analysisdata");
+
+                entity.Property(e => e.id).IsRequired()
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
+
+                entity.Property(e => e.vehicle)
+                    .HasMaxLength(64)
+                    .HasColumnName("vehicle");
+
+                entity.Property(e => e.filedate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("filedate");
+
+                entity.Property(e => e.duration)
+                   .HasColumnType("double(20,2)")
+                   .HasColumnName("duration");
+                entity.Property(e => e.mileage)
+                  .HasColumnType("double(20,2)")
+                  .HasColumnName("mileage");
+                entity.Property(e => e.averagespeed)
+                    .HasColumnType("double(20,5)")
+                    .HasColumnName("averagespeed");
+
+                entity.Property(e => e.maxthrottle)
+                  .HasColumnType("double(20,5)")
+                  .HasColumnName("maxthrottle");
+
+                entity.Property(e => e.filename)
+                    .HasMaxLength(64)
+                    .HasColumnName("filename");
+
+                entity.Property(e => e.maxbrake)
+                    .HasColumnType("double(20,5)")
+                    .HasColumnName("maxbrake");
+
+                entity.Property(e => e.maxangle)
+                    .HasColumnType("double(20,5)")
+                    .HasColumnName("maxangle");
+
+                entity.Property(e => e.minangle)
+                    .HasColumnType("double(20,5)")
+                    .HasColumnName("minangle");
+
+                entity.Property(e => e.wftfxlfk3)
+                    .HasColumnType("double(30,10)")
+                    .HasColumnName("wftfxlfk3");
+                entity.Property(e => e.wftfxrfk3)
+                  .HasColumnType("double(30,10)")
+                  .HasColumnName("wftfxrfk3");
+                entity.Property(e => e.wftfxlrk3)
+                  .HasColumnType("double(30,10)")
+                  .HasColumnName("wftfxlrk3");
+                entity.Property(e => e.wftfxrrk3)
+                  .HasColumnType("double(30,10)")
+                  .HasColumnName("wftfxrrk3");
+                entity.Property(e => e.wftfylfk3)
+                    .HasColumnType("double(30,10)")
+                    .HasColumnName("wftfylfk3");
+                entity.Property(e => e.wftfyrfk3)
+                  .HasColumnType("double(30,10)")
+                  .HasColumnName("wftfyrfk3");
+                entity.Property(e => e.wftfylrk3)
+                  .HasColumnType("double(30,10)")
+                  .HasColumnName("wftfylrk3");
+                entity.Property(e => e.wftfyrrk3)
+                  .HasColumnType("double(30,10)")
+                  .HasColumnName("wftfyrrk3");
+                entity.Property(e => e.wftfzlfk3)
+                    .HasColumnType("double(30,10)")
+                    .HasColumnName("wftfzlfk3");
+                entity.Property(e => e.wftfzrfk3)
+                  .HasColumnType("double(30,10)")
+                  .HasColumnName("wftfzrfk3");
+                entity.Property(e => e.wftfzlrk3)
+                  .HasColumnType("double(30,10)")
+                  .HasColumnName("wftfzlrk3");
+                entity.Property(e => e.wftfzrrk3)
+                  .HasColumnType("double(30,10)")
+                  .HasColumnName("wftfzrrk3");
+
+                entity.Property(e => e.wftfxlfk5)
+                  .HasColumnType("double(30,10)")
+                  .HasColumnName("wftfxlfk5");
+                entity.Property(e => e.wftfxrfk5)
+                  .HasColumnType("double(30,10)")
+                  .HasColumnName("wftfxrfk5");
+                entity.Property(e => e.wftfxlrk5)
+                  .HasColumnType("double(30,10)")
+                  .HasColumnName("wftfxlrk5");
+                entity.Property(e => e.wftfxrrk5)
+                  .HasColumnType("double(30,10)")
+                  .HasColumnName("wftfxrrk5");
+                entity.Property(e => e.wftfylfk5)
+                    .HasColumnType("double(30,10)")
+                    .HasColumnName("wftfylfk5");
+                entity.Property(e => e.wftfyrfk5)
+                  .HasColumnType("double(30,10)")
+                  .HasColumnName("wftfyrfk5");
+                entity.Property(e => e.wftfylrk5)
+                  .HasColumnType("double(30,10)")
+                  .HasColumnName("wftfylrk5");
+                entity.Property(e => e.wftfyrrk5)
+                  .HasColumnType("double(30,10)")
+                  .HasColumnName("wftfyrrk5");
+                entity.Property(e => e.wftfzlfk5)
+                    .HasColumnType("double(30,10)")
+                    .HasColumnName("wftfzlfk5");
+                entity.Property(e => e.wftfzrfk5)
+                  .HasColumnType("double(30,10)")
+                  .HasColumnName("wftfzrfk5");
+                entity.Property(e => e.wftfzlrk5)
+                  .HasColumnType("double(30,10)")
+                  .HasColumnName("wftfzlrk5");
+                entity.Property(e => e.wftfzrrk5)
+                  .HasColumnType("double(30,10)")
+                  .HasColumnName("wftfzrrk5");
+            });
             modelBuilder.Entity<Speeddistribution>(entity =>
             {
                 entity.ToTable("speeddistribution");
@@ -278,6 +407,111 @@ namespace MysqlforDataWatch
                 entity.Property(e => e._90100)
                     .HasColumnType("double(20,5)")
                     .HasColumnName("90-100");
+            });
+
+            modelBuilder.Entity<EngineRpmDistribution_Time>(entity =>
+            {
+                entity.ToTable("enginerpmdistribution_time");
+
+                entity.Property(e => e.Id)
+                    .HasMaxLength(64)
+                    .HasColumnName("id");
+
+                entity.Property(e => e._Above6000).HasColumnType("int(20) unsigned").HasColumnName("Above6000"); ;
+
+                entity.Property(e => e.Datadate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("datadate");
+
+                entity.Property(e => e.VehicleId)
+                    .HasMaxLength(64)
+                    .HasColumnName("VehicleID");
+
+                entity.Property(e => e._01000)
+                    .HasColumnType("int(20) unsigned")
+                    .HasColumnName("0-1000");
+
+                entity.Property(e => e._10001500)
+                    .HasColumnType("int(20) unsigned")
+                    .HasColumnName("1000-1500");
+
+                entity.Property(e => e._15002000)
+                    .HasColumnType("int(20) unsigned")
+                    .HasColumnName("1500-2000");
+
+                entity.Property(e => e._20002500)
+                    .HasColumnType("int(20) unsigned")
+                    .HasColumnName("2000-2500");
+
+                entity.Property(e => e._25003000)
+                    .HasColumnType("int(20) unsigned")
+                    .HasColumnName("2500-3000");
+
+                entity.Property(e => e._30004000)
+                    .HasColumnType("int(20) unsigned")
+                    .HasColumnName("3000-4000");
+
+                entity.Property(e => e._40005000)
+                    .HasColumnType("int(20) unsigned")
+                    .HasColumnName("4000-5000");
+
+                entity.Property(e => e._50006000)
+                    .HasColumnType("int(20) unsigned")
+                    .HasColumnName("5000-6000");
+            });
+
+            modelBuilder.Entity<EngineRpmDistribution_Distance>(entity =>
+            {
+                entity.ToTable("enginerpmdistribution_distance");
+
+                entity.Property(e => e.Id)
+                    .HasMaxLength(64)
+                    .HasColumnName("id");
+
+                entity.Property(e => e._Above6000).HasColumnType("double(20,5)");
+
+                entity.Property(e => e.Datadate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("datadate");
+
+                entity.Property(e => e.VehicleId)
+                    .HasMaxLength(64)
+                    .HasColumnName("VehicleID");
+
+                entity.Property(e => e._01000)
+                    .HasColumnType("double(20,5)")
+                    .HasColumnName("0-1000");
+
+                entity.Property(e => e._10001500)
+                    .HasColumnType("double(20,5)")
+                    .HasColumnName("1000-1500");
+
+                entity.Property(e => e._15002000)
+                    .HasColumnType("double(20,5)")
+                    .HasColumnName("1500-2000");
+
+                entity.Property(e => e._20002500)
+                    .HasColumnType("double(20,5)")
+                    .HasColumnName("2000-2500");
+
+                entity.Property(e => e._25003000)
+                    .HasColumnType("double(20,5)")
+                    .HasColumnName("2500-3000");
+
+                entity.Property(e => e._30004000)
+                    .HasColumnType("double(20,5)")
+                    .HasColumnName("3000-4000");
+
+                entity.Property(e => e._40005000)
+                    .HasColumnType("double(20,5)")
+                    .HasColumnName("4000-5000");
+
+                entity.Property(e => e._50006000)
+                    .HasColumnType("double(20,5)")
+                    .HasColumnName("5000-6000");
+                entity.Property(e => e._Above6000)
+                    .HasColumnType("double(20,5)")
+                    .HasColumnName("Above6000");
             });
 
             modelBuilder.Entity<Streeringrecognition>(entity =>
@@ -555,7 +789,10 @@ namespace MysqlforDataWatch
                     .HasColumnType("tinyint(1) unsigned")
                      .HasColumnName("importspeed")
                     ;
-
+                entity.Property(e => e.importpuma)
+                    .HasColumnType("tinyint(1) unsigned")
+                     .HasColumnName("importpuma")
+                    ;
                 entity.Property(e => e.importstatistic)
                     .HasColumnType("tinyint(1) unsigned")
                      .HasColumnName("importstatistic")
@@ -573,6 +810,10 @@ namespace MysqlforDataWatch
                     .HasColumnType("tinyint(1) unsigned")
                     .HasColumnName("importwft")
                     ;
+                entity.Property(e => e.importengspd)
+                   .HasColumnType("tinyint(1) unsigned")
+                   .HasColumnName("importengspd")
+                   ;
                 entity.Property(e => e.speedcolumnname)
                   .HasMaxLength(64)
                   .HasColumnName("speedcolumnname");
@@ -603,6 +844,9 @@ namespace MysqlforDataWatch
                 entity.Property(e => e.accxbody)
 .HasMaxLength(64)
 .HasColumnName("accxbody");
+                entity.Property(e => e.enginespeed)
+.HasMaxLength(64)
+.HasColumnName("enginespeed");
             });
 
             modelBuilder.Entity<t_vehiclecomputepara>(entity =>

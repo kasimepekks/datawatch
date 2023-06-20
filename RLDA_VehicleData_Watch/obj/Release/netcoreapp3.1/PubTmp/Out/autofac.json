@@ -22,7 +22,16 @@
       "instanceScope": "per-lifetimescope", //
       "injectProperties": true //是否支持属性注入
     },
-
+    {
+      "type": "DAL.SH_ADF0979DAL.AnalysisData_PUMA_DAL,DAL", //接口的实现 全名称
+      "services": [
+        {
+          "type": "IDAL.SH_ADF0979IDAL.IAnalysisData_PUMA_IDAL,IDAL" // 接口的全名称
+        }
+      ],
+      "instanceScope": "per-lifetimescope", //
+      "injectProperties": true //是否支持属性注入
+    },
     {
       "type": "DAL.SH_ADF0979DAL.AnalysisData_ACC_DAL,DAL", //接口的实现 全名称
       "services": [
@@ -108,7 +117,26 @@
       "instanceScope": "per-lifetimescope", //
       "injectProperties": true //是否支持属性注入
     },
-
+    {
+      "type": "DAL.SH_ADF0979DAL.EngineSpeedDisDistribution_DAL,DAL", //接口的实现 全名称
+      "services": [
+        {
+          "type": "IDAL.SH_ADF0979IDAL.IEngineSpeedDisDistribution_IDAL,IDAL" // 接口的全名称
+        }
+      ],
+      "instanceScope": "per-lifetimescope", //
+      "injectProperties": true //是否支持属性注入
+    },
+    {
+      "type": "DAL.SH_ADF0979DAL.EngineSpeedTimeDistribution_DAL,DAL", //接口的实现 全名称
+      "services": [
+        {
+          "type": "IDAL.SH_ADF0979IDAL.IEngineSpeedTimeDistribution_IDAL,IDAL" // 接口的全名称
+        }
+      ],
+      "instanceScope": "per-lifetimescope", //
+      "injectProperties": true //是否支持属性注入
+    },
     {
       "type": "BLL.SH_ADF0979BLL.RealTime_ACC_BLL,BLL", //接口的实现 全名称
       "services": [
@@ -130,7 +158,16 @@
       "instanceScope": "per-lifetimescope", //单例生命周期
       "injectProperties": true //是否支持属性注入
     },
-
+    {
+      "type": "BLL.SH_ADF0979BLL.AnalysisData_PUMA_BLL,BLL", //接口的实现 全名称
+      "services": [
+        {
+          "type": "IBLL.SH_ADF0979IBLL.IAnalysisData_PUMA_IBLL,IBLL" // 接口的全名称
+        }
+      ],
+      "instanceScope": "per-lifetimescope", //单例生命周期
+      "injectProperties": true //是否支持属性注入
+    },
     {
       "type": "BLL.SH_ADF0979BLL.AnalysisData_ACC_BLL,BLL", //接口的实现 全名称
       "services": [
@@ -215,8 +252,27 @@
       ],
       "instanceScope": "per-lifetimescope", //单例生命周期
       "injectProperties": true //是否支持属性注入
+    },
+    {
+      "type": "BLL.SH_ADF0979BLL.EngineSpeedDisDistribution_BLL,BLL", //接口的实现 全名称
+      "services": [
+        {
+          "type": "IBLL.SH_ADF0979IBLL.IEngineSpeedDisDistribution_IBLL,IBLL" // 接口的全名称
+        }
+      ],
+      "instanceScope": "per-lifetimescope", //单例生命周期
+      "injectProperties": true //是否支持属性注入
+    },
+    {
+      "type": "BLL.SH_ADF0979BLL.EngineSpeedTimeDistribution_BLL,BLL", //接口的实现 全名称
+      "services": [
+        {
+          "type": "IBLL.SH_ADF0979IBLL.IEngineSpeedTimeDistribution_IBLL,IBLL" // 接口的全名称
+        }
+      ],
+      "instanceScope": "per-lifetimescope", //单例生命周期
+      "injectProperties": true //是否支持属性注入
     }
-
 
 
 

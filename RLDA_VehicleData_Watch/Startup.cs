@@ -1,37 +1,25 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+
 using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using BLL.SH_ADF0979BLL;
-using Coravel;
+
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ApplicationParts;
-using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.AspNetCore.SignalR;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+
 using Microsoft.Net.Http.Headers;
 using MysqlforDataWatch;
-using Newtonsoft.Json.Serialization;
-using Pomelo.AspNetCore.TimedJob;
 
-using RLDA_VehicleData_Watch.Controllers;
 using RLDA_VehicleData_Watch.Models;
 using RLDA_VehicleData_Watch.Utility.Filter;
 using Tools.MyAutofacModule;

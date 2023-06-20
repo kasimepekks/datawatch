@@ -7,10 +7,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Tools;
 using Tools.AddDistance;
+using Tools.ErrorMessage;
 using Tools.FileOperation;
 using Tools.ListOperation;
 using Tools.ListOperation.BrakeListOperation;
@@ -29,45 +31,54 @@ namespace DAL.SH_ADF0979DAL
 
         public string JudgeandMergeBmpDataperHalfHour(FileInfo file, LoadCSVDataStructforImport importstruct, ref List<Bumprecognition> blist, string vehicleid, in VehicleIDPara vehicleIDPara)
         {
-            
-            var time = Convert.ToDateTime(file.Name.Split('-')[0].Replace("_", "-"));
-            if (vehicleIDPara.BumpImport == 1)
+            try
             {
-                var sqllist = _DB.Bumprecognitions.Where(a => a.Datadate > time && a.Datadate < time.AddDays(1)).Select(a => a.VehicleId).AsNoTracking().FirstOrDefault();
-                if (string.IsNullOrEmpty(sqllist))
+                var time = Convert.ToDateTime(file.Name.Split('-')[0].Replace("_", "-"));
+                if (vehicleIDPara.BumpImport == 1)
                 {
-                    if (importstruct.Iscontinue)
+                    var sqllist = _DB.Bumprecognitions.Where(a => a.Datadate > time && a.Datadate < time.AddDays(1) && a.VehicleId == vehicleid).Select(a => a.VehicleId).AsNoTracking().FirstOrDefault();
+                    if (string.IsNullOrEmpty(sqllist))
                     {
-                        if (importstruct.boolcan[4]&& importstruct.boolcan[5] && importstruct.boolcan[6])
+                        if (importstruct.Iscontinue)
                         {
-                            var list = AddBump.addbumplist(importstruct.lists[4], importstruct.lists[5], importstruct.lists[6], importstruct.spd, vehicleid, importstruct.name, importstruct.datetime, in vehicleIDPara);
-                            if (list.Count > 0)
+                            if (importstruct.boolcan[4] && importstruct.boolcan[5] && importstruct.boolcan[6])
                             {
-                                blist = blist.Concat(list).ToList();
+                                var list = AddBump.addbumplist(importstruct.lists[4], importstruct.lists[5], importstruct.lists[6], importstruct.spd, vehicleid, importstruct.name, importstruct.datetime, in vehicleIDPara);
+                                if (list.Count > 0)
+                                {
+                                    blist = blist.Concat(list).ToList();
+                                }
+                                return null;
                             }
-                            return null;
+                            else
+                            {
+                                return ($"此文件{file.Name}进行冲击计算时序号为{names[4]}:{importstruct.boolcan[4]}{names[5]}:{importstruct.boolcan[5]}{names[6]}:{importstruct.boolcan[6]}这一列出现了问题，数据状态为{importstruct.status}！{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}");
+                            }
                         }
                         else
                         {
-                            return ($"此文件{file.Name}进行冲击计算时序号为{names[4]}:{importstruct.boolcan[4]}{names[5]}:{importstruct.boolcan[5]}{names[6]}:{importstruct.boolcan[6]}这一列出现了问题，数据状态为{importstruct.status}！{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}");
+                            return ($"此文件{file.Name}进行冲击计算时出现了问题，数据状态为{importstruct.status}！{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}");
                         }
                     }
                     else
                     {
-                        return ($"此文件{file.Name}进行冲击计算时出现了问题，数据状态为{importstruct.status}！{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}");
+                        return ($"此文件{file.Name}进行冲击计算时已导入过，须删除后再重新导入！{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}");
+
                     }
                 }
+
                 else
                 {
-                    return ($"此文件{file.Name}进行冲击计算时已导入过，须删除后再重新导入！{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}");
-
+                    return null;
                 }
             }
-           
-            else
+            catch (Exception ex)
             {
-                return null;
+                errormessage.getErrormessage(file, ex.Message);
+                
+                throw;
             }
+           
         }
 
     }

@@ -141,7 +141,7 @@ layui.use(['element', 'layer', 'laydate', 'table', 'form'], function () {
                         for (var i = 0; i < data.length; i++) {
                             var item = data[i];
                             if (item["chantitle"] == "wftfxlf") {
-                                LFXdamage.push(item["damage"]);
+                                LFXdamage.push(item["damagek5"]);
                                 LFXdatetime.push(item["datetime"]);
                                 RFXdatetime.push(item["datetime"]);
                                 LRXdatetime.push(item["datetime"]);
@@ -156,39 +156,39 @@ layui.use(['element', 'layer', 'laydate', 'table', 'form'], function () {
                                 RRZdatetime.push(item["datetime"]);
                             }
                             if (item["chantitle"] == "wftfxrf") {
-                                RFXdamage.push(item["damage"])
+                                RFXdamage.push(item["damagek5"])
                             }
                             if (item["chantitle"] == "wftfxlr") {
-                                LRXdamage.push(item["damage"])
+                                LRXdamage.push(item["damagek5"])
                             }
                             if (item["chantitle"] == "wftfxrr") {
-                                RRXdamage.push(item["damage"])
+                                RRXdamage.push(item["damagek5"])
                             }
                             if (item["chantitle"] == "wftfylf") {
-                                LFYdamage.push(item["damage"]);
+                                LFYdamage.push(item["damagek5"]);
 
                             }
                             if (item["chantitle"] == "wftfyrf") {
-                                RFYdamage.push(item["damage"])
+                                RFYdamage.push(item["damagek5"])
                             }
                             if (item["chantitle"] == "wftfylr") {
-                                LRYdamage.push(item["damage"])
+                                LRYdamage.push(item["damagek5"])
                             }
                             if (item["chantitle"] == "wftfyrr") {
-                                RRYdamage.push(item["damage"])
+                                RRYdamage.push(item["damagek5"])
                             }
                             if (item["chantitle"] == "wftfzlf") {
-                                LFZdamage.push(item["damage"]);
+                                LFZdamage.push(item["damagek5"]);
 
                             }
                             if (item["chantitle"] == "wftfzrf") {
-                                RFZdamage.push(item["damage"])
+                                RFZdamage.push(item["damagek5"])
                             }
                             if (item["chantitle"] == "wftfzlr") {
-                                LRZdamage.push(item["damage"])
+                                LRZdamage.push(item["damagek5"])
                             }
                             if (item["chantitle"] == "wftfzrr") {
-                                RRZdamage.push(item["damage"])
+                                RRZdamage.push(item["damagek5"])
                             }
                         }
                         //叠加损伤操作

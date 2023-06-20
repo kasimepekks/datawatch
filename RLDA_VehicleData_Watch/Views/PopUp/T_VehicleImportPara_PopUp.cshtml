@@ -116,7 +116,31 @@
                 </div>
             </div>
         </div>
-     
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">转速名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="enginespeed" placeholder="请填写csv里实际的转速通道名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+          
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">单位里程导入</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" name="importpuma" id="importpuma" lay-skin="switch" lay-filter="importpuma" title="开关" lay-text="ON|OFF">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">转速导入</label>
+                <div class="layui-input-inline">
+                    <input type="checkbox" name="importengspd" id="importengspd" lay-skin="switch" lay-filter="importengspd" title="开关" lay-text="ON|OFF">
+                </div>
+            </div>
+        </div>
+
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">统计值导入</label>
@@ -159,7 +183,7 @@
                 </div>
             </div>
         </div>
-         <div class="layui-form-item">
+        <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">冲击导入</label>
                 <div class="layui-input-inline">
@@ -192,7 +216,7 @@
     </form>
     <script>
 
-
+        var importpumacheck;
         var statisticimportcheck;
         var gpsimportcheck;
         var speedimportcheck;
@@ -201,7 +225,7 @@
         var steeringimportcheck;
         var bumpimportcheck;
         var wftimportcheck;
-     
+        var importengspdcheck;
         layui.use(['element','layer','form','laydate'], function () {
              var element = layui.element;
              var $ = layui.jquery;
@@ -218,6 +242,9 @@
             throttleimportcheck = ($.trim($('#throttleimport').is(":checked"))) == "true" ? 1 : 0;
             bumpimportcheck = ($.trim($('#bumpimport').is(":checked")))=="true"?1:0;
             wftimportcheck = ($.trim($('#wftimport').is(":checked"))) == "true" ? 1 : 0;
+            importengspdcheck = ($.trim($('#importengspd').is(":checked"))) == "true" ? 1 : 0;
+
+            importpumacheck = ($.trim($('#importpuma').is(":checked"))) == "true" ? 1 : 0;
 
             form.on('switch(statisticimport)', function (data) {
 
@@ -257,6 +284,16 @@
             form.on('switch(wftimport)', function (data) {
 
                 wftimportcheck = data.elem.checked; //开关是否开启，true或者false
+
+            });
+            form.on('switch(importengspd)', function (data) {
+
+                importengspdcheck = data.elem.checked; //开关是否开启，true或者false
+
+            });
+            form.on('switch(importpuma)', function (data) {
+
+                importpumacheck = data.elem.checked; //开关是否开启，true或者false
 
             });
             setTimeout(()=>{ layui.form.render('checkbox');},200);

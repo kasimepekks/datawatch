@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "dkU9lPzfnqtr+HYhejdyZuhm9+Il7N2o30brCX6iXF+HMHOu89+hTI5LkU8OfDo6SV33U2qaYFiyHMgeuIipmg==",
+  "dgSpecHash": "6u7IOuGYkGGhYjeuvc8wybRkknO/J15zmH6xrTAzeFkSlPYlm6e4JDJfCvRHw5gcjA5Rfzs+LISS8slrbz68Bg==",
   "success": true,
   "projectFilePath": "D:\\VS_Project\\SourceCode\\data-monitor\\RLDA_VehicleData_Watch\\RLDA_VehicleData_Watch.csproj",
   "expectedPackageFiles": [
@@ -72,7 +72,9 @@
     "C:\\Users\\Administrator\\.nuget\\packages\\nuget.frameworks\\4.7.0\\nuget.frameworks.4.7.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\pomelo.aspnetcore.timedjob\\2.0.0-rtm-10046\\pomelo.aspnetcore.timedjob.2.0.0-rtm-10046.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\pomelo.entityframeworkcore.mysql\\5.0.0\\pomelo.entityframeworkcore.mysql.5.0.0.nupkg.sha512",
-    "C:\\Users\\Administrator\\.nuget\\packages\\rainflowanddamagetool\\1.0.1\\rainflowanddamagetool.1.0.1.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\rainflowanddamagetool\\1.0.2\\rainflowanddamagetool.1.0.2.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\rg.csvserializer\\1.0.10\\rg.csvserializer.1.0.10.nupkg.sha512",
+    "C:\\Users\\Administrator\\.nuget\\packages\\rg.missil\\1.0.12\\rg.missil.1.0.12.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.debian.8-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.23-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.fedora.24-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",

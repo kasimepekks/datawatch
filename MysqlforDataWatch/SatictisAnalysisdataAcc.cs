@@ -16,5 +16,6 @@ namespace MysqlforDataWatch
         public double? Min { get; set; }
         public double? Range { get; set; }
         public double? Rms { get; set; }
+        //public int? fileindex { get; set; }
     }
 }

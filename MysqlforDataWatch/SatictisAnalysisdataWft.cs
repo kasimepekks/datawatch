@@ -16,6 +16,7 @@ namespace MysqlforDataWatch
         public double? Min { get; set; }
         public double? Range { get; set; }
         public double? Rms { get; set; }
-        public decimal? Damage { get; set; }
+        public decimal? DamageK5 { get; set; }
+        public decimal? DamageK3 { get; set; }
     }
 }

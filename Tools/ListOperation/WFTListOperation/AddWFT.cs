@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
-using Tools.AddDamage;
+
 using Tools.MyConfig;
 
 namespace Tools.ListOperation.WFTListOperation
@@ -28,7 +28,8 @@ namespace Tools.ListOperation.WFTListOperation
                 entity.Min = dt.AsEnumerable().Min(s => Convert.ToDouble(s.Field<string>(tableHead[l + 1])));
                 List<double> damage = dt.AsEnumerable().Select(a => Convert.ToDouble(a.Field<string>(tableHead[l + 1]))).ToList();
                 //entity.Damage = GetDamageFromList.GetDamage(damage);
-                entity.Damage = (decimal?)TotalProcess.GetAccumDamagefromList(damage);
+                entity.DamageK3 = (decimal?)TotalProcess.GetAccumDamagefromList(damage,3,3);
+                entity.DamageK5 = (decimal?)TotalProcess.GetAccumDamagefromList(damage, 5, 5);
                 List<string> lst = (from d in dt.AsEnumerable() select d.Field<string>(tableHead[l + 1])).ToList();
                 double t = 0;
                 int n = lst.Count;

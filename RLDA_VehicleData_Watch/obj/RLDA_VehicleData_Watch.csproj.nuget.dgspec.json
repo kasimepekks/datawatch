@@ -378,9 +378,6 @@
               "D:\\VS_Project\\SourceCode\\data-monitor\\IDAL\\IDAL.csproj": {
                 "projectPath": "D:\\VS_Project\\SourceCode\\data-monitor\\IDAL\\IDAL.csproj"
               },
-              "D:\\VS_Project\\SourceCode\\data-monitor\\MysqlforDataWatch\\MysqlforDataWatch.csproj": {
-                "projectPath": "D:\\VS_Project\\SourceCode\\data-monitor\\MysqlforDataWatch\\MysqlforDataWatch.csproj"
-              },
               "D:\\VS_Project\\SourceCode\\data-monitor\\Tools\\Tools.csproj": {
                 "projectPath": "D:\\VS_Project\\SourceCode\\data-monitor\\Tools\\Tools.csproj"
               }
@@ -501,9 +498,13 @@
               "target": "Package",
               "version": "[5.0.0, )"
             },
+            "RG.CsvSerializer": {
+              "target": "Package",
+              "version": "[1.0.10, )"
+            },
             "RainFlowandDamageTool": {
               "target": "Package",
-              "version": "[1.0.1, )"
+              "version": "[1.0.2, )"
             }
           },
           "imports": [

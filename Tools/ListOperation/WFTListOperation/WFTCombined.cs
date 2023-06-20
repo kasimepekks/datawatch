@@ -34,7 +34,8 @@ namespace Tools.ListOperation.WFTListOperation
                      Range = x.Max(a => a.Max) - x.Min(a => a.Min),
                      Rms = x.Sum(a => a.Rms) * Math.Sqrt(x.Count()),
 
-                     Damage = Math.Round((decimal)x.Sum(a => a.Damage), 0),
+                     DamageK3 = (decimal)x.Sum(a => a.DamageK3),
+                     DamageK5 = (decimal)x.Sum(a => a.DamageK5)
 
                  }).OrderBy(b => b.Chantitle).ThenBy(b => b.Datadate).ToList();
 
@@ -51,7 +52,8 @@ namespace Tools.ListOperation.WFTListOperation
                     Min = a.Min,
                     Range = a.Range,
                     Rms = a.Rms,
-                    Damage = a.Damage
+                    DamageK3 = a.DamageK3,
+                    DamageK5 = a.DamageK5
 
                 }).ToList();
 

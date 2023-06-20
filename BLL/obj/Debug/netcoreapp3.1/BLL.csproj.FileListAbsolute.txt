@@ -57,6 +57,10 @@ D:\VS_Project\SourceCode\data-monitor\BLL\bin\Debug\netcoreapp3.1\IBLL.pdb
 D:\VS_Project\SourceCode\data-monitor\BLL\bin\Debug\netcoreapp3.1\IDAL.pdb
 D:\VS_Project\SourceCode\data-monitor\BLL\bin\Debug\netcoreapp3.1\MysqlforDataWatch.pdb
 D:\VS_Project\SourceCode\data-monitor\BLL\bin\Debug\netcoreapp3.1\Tools.pdb
+D:\VS_Project\编译后的项目\bll\Debug\netcoreapp3.1\mysqlconnection.json
+D:\VS_Project\编译后的项目\bll\Debug\netcoreapp3.1\BLL.deps.json
+D:\VS_Project\编译后的项目\bll\Debug\netcoreapp3.1\BLL.dll
+D:\VS_Project\编译后的项目\bll\Debug\netcoreapp3.1\BLL.pdb
 D:\VS_Project\SourceCode\data-monitor\BLL\obj\Debug\netcoreapp3.1\BLL.csproj.AssemblyReference.cache
 D:\VS_Project\SourceCode\data-monitor\BLL\obj\Debug\netcoreapp3.1\BLL.GeneratedMSBuildEditorConfig.editorconfig
 D:\VS_Project\SourceCode\data-monitor\BLL\obj\Debug\netcoreapp3.1\BLL.AssemblyInfoInputs.cache
@@ -65,7 +69,3 @@ D:\VS_Project\SourceCode\data-monitor\BLL\obj\Debug\netcoreapp3.1\BLL.csproj.Cor
 D:\VS_Project\SourceCode\data-monitor\BLL\obj\Debug\netcoreapp3.1\BLL.csproj.CopyComplete
 D:\VS_Project\SourceCode\data-monitor\BLL\obj\Debug\netcoreapp3.1\BLL.dll
 D:\VS_Project\SourceCode\data-monitor\BLL\obj\Debug\netcoreapp3.1\BLL.pdb
-D:\VS_Project\编译后的项目\bll\Debug\netcoreapp3.1\mysqlconnection.json
-D:\VS_Project\编译后的项目\bll\Debug\netcoreapp3.1\BLL.deps.json
-D:\VS_Project\编译后的项目\bll\Debug\netcoreapp3.1\BLL.dll
-D:\VS_Project\编译后的项目\bll\Debug\netcoreapp3.1\BLL.pdb

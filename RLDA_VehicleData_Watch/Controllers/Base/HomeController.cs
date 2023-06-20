@@ -270,10 +270,10 @@ namespace RLDA_VehicleData_Watch.Controllers
             }
         }
         [Authorize]
-        public IActionResult AddorEditSingleT_VehicleImportPara(int id, string method, string vehicleidtext, string importinputpath,  string importresultpath, byte statisticimportcheck, byte gpsimportcheck,
+        public IActionResult AddorEditSingleT_VehicleImportPara(int id, string method, string vehicleidtext, string importinputpath,  string importresultpath, byte importpumacheck, byte statisticimportcheck, byte gpsimportcheck,
             byte speedimportcheck, byte throttleimportcheck, byte brakeimportcheck, byte steeringimportcheck, byte bumpimportcheck, byte wftimportcheck, byte importgpsreductiontimes, byte importaccreductiontimes, byte importwftreductiontimes
             ,string speedcolumnname,string throttlecolumnname,string brakecolumnname,string whlangcolumnname,string whlanggrcolumnname,string acczwhllf,string acczwhlrf
-            ,string acczwhllr,string accybody,string accxbody)
+            ,string acczwhllr,string accybody,string accxbody, string enginespeed,byte importengspdcheck)
         {
             if (method == "edit")
             {
@@ -286,6 +286,7 @@ namespace RLDA_VehicleData_Watch.Controllers
                     importaccreductiontimes = importaccreductiontimes,
                     importgpsreductiontimes = importgpsreductiontimes,
                     importwftreductiontimes = importwftreductiontimes,
+                    importpuma=importpumacheck,
                     importgps = gpsimportcheck,
                     importspeed = speedimportcheck,
                     importbrake = brakeimportcheck,
@@ -294,6 +295,7 @@ namespace RLDA_VehicleData_Watch.Controllers
                     importstatistic = statisticimportcheck,
                     importimpact = bumpimportcheck,
                     importwft = wftimportcheck,
+                    importengspd=importengspdcheck,
                     speedcolumnname= speedcolumnname,
                     throttlecolumnname = throttlecolumnname,
                     brakecolumnname = brakecolumnname,
@@ -303,6 +305,7 @@ namespace RLDA_VehicleData_Watch.Controllers
                     accybody = accybody,
                     accxbody = accxbody,
                     acczwhllr = acczwhllr,
+                    enginespeed = enginespeed,
                     whlanggrcolumnname = whlanggrcolumnname
                 };
                 _db.Entry<t_vehicleimportpara>(vehicle).State = EntityState.Modified;
@@ -327,6 +330,7 @@ namespace RLDA_VehicleData_Watch.Controllers
                     importaccreductiontimes = importaccreductiontimes,
                     importgpsreductiontimes = importgpsreductiontimes,
                     importwftreductiontimes = importwftreductiontimes,
+                    importpuma = importpumacheck,
                     importgps = gpsimportcheck,
                     importspeed = speedimportcheck,
                     importbrake = brakeimportcheck,
@@ -335,6 +339,7 @@ namespace RLDA_VehicleData_Watch.Controllers
                     importstatistic = statisticimportcheck,
                     importimpact = bumpimportcheck,
                     importwft = wftimportcheck,
+                    importengspd = importengspdcheck,
                     speedcolumnname = speedcolumnname,
                     throttlecolumnname = throttlecolumnname,
                     brakecolumnname = brakecolumnname,
@@ -344,6 +349,7 @@ namespace RLDA_VehicleData_Watch.Controllers
                     accybody = accybody,
                     accxbody = accxbody,
                     acczwhllr = acczwhllr,
+                    enginespeed = enginespeed,
                     whlanggrcolumnname = whlanggrcolumnname
                 };
                 _db.Set<t_vehicleimportpara>().Add(vehicle);

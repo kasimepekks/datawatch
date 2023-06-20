@@ -48,6 +48,7 @@
                         , { field: 'vehicleid', title: '车辆编号', width: '100', sort: true }
                         , { field: 'importinputpath', title: 'input导入路径', width: '140', sort: true }
                         , { field: 'importresultpath', title: 'result导入路径', width: '140', sort: true }
+                         , { field: 'importpuma', title: '单位里程导入', width: '80', sort: true }
                         , { field: 'importgps', title: '经纬度导入', width: '80', sort: true }
                         , { field: 'importbrake', title: '刹车导入', width: '80', sort: true }
                         , { field: 'importthrottle', title: '油门导入', width: '80', sort: true }
@@ -56,7 +57,9 @@
                         , { field: 'importimpact', title: '冲击导入', width: '80', sort: true }
                         , { field: 'importsteering', title: '转向导入', width: '80', sort: true }
                         , { field: 'importwft', title: 'WFT导入', width: '80', sort: true }
+                        , { field: 'importengspd', title: '转速导入', width: '80', sort: true }
                         , { field: 'speedcolumnname', title: '车速名称', width: '80', sort: true }
+                        , { field: 'enginespeed', title: '转速名称', width: '80', sort: true }
                         , { field: 'throttlecolumnname', title: '油门名称', width: '80', sort: true }
                         , { field: 'brakecolumnname', title: '制动名称', width: '80', sort: true }
                         , { field: 'whlangcolumnname', title: '转向角名称', width: '80', sort: true }
@@ -108,6 +111,7 @@
                                 var acczwhllr = bodyEdit.find('#acczwhllr').val();
                                 var accybody = bodyEdit.find('#accybody').val();
                                 var accxbody = bodyEdit.find('#accxbody').val();
+                                 var enginespeed = bodyEdit.find('#enginespeed').val();
                                 if (vehicleidtext != "" && importinputpath != "" && importresultpath != "" 
                                     && importgpsreductiontimes != "" && importaccreductiontimes != ""&& importwftreductiontimes != "") 
                                 {
@@ -129,6 +133,8 @@
                                             importaccreductiontimes: importaccreductiontimes,
                                             importwftreductiontimes: importwftreductiontimes,
 
+
+                                            importpumacheck: iframeEdit.importpumacheck ? 1 : 0,
                                             statisticimportcheck: iframeEdit.statisticimportcheck ? 1 : 0,
                                             gpsimportcheck: iframeEdit.gpsimportcheck ? 1 : 0,
                                             speedimportcheck: iframeEdit.speedimportcheck ? 1 : 0,
@@ -137,6 +143,7 @@
                                             steeringimportcheck: iframeEdit.steeringimportcheck ? 1 : 0,
                                             bumpimportcheck: iframeEdit.bumpimportcheck ? 1 : 0,
                                             wftimportcheck: iframeEdit.wftimportcheck ? 1 : 0,
+                                            importengspdcheck: iframeEdit.importengspdcheck ? 1 : 0,
                                             speedcolumnname: speedcolumnname,
                                             throttlecolumnname: throttlecolumnname,
                                             brakecolumnname: brakecolumnname,
@@ -147,6 +154,7 @@
                                             acczwhllr: acczwhllr,
                                             accybody: accybody,
                                             accxbody: accxbody,
+                                            enginespeed:enginespeed,
                                             method: "edit"
                                         },
                                         //请求成功
@@ -178,6 +186,7 @@
 
 
                             },
+                            //成功打开编辑页面
                             success: function (layero, index) {
 
                                 bodyEdit = layer.getChildFrame('body', index);//获得子frame的body里的元素
@@ -201,7 +210,16 @@
                                 bodyEdit.find('#acczwhllr').val(data.acczwhllr);
                                 bodyEdit.find('#accybody').val(data.accybody);
                                 bodyEdit.find('#accxbody').val(data.accxbody);
-                                
+                                bodyEdit.find('#enginespeed').val(data.enginespeed);
+
+                                  if (data.importpuma === 1) {
+                                    
+                                    bodyEdit.find('#importpuma').prop('checked', true);
+                                }
+                                else {
+                                    bodyEdit.find('#importpuma').removeAttr('checked');
+                                }
+
                                 if (data.importstatistic === 1) {
                                     
                                     bodyEdit.find('#statisticimport').prop('checked', true);
@@ -251,7 +269,12 @@
                                 else {
                                     bodyEdit.find('#wftimport').removeAttr('checked');
                                 }
-                              
+                                if (data.importengspd === 1) {
+                                    bodyEdit.find('#importengspd').prop('checked', true);
+                                }
+                                else {
+                                    bodyEdit.find('#importengspd').removeAttr('checked');
+                                }
                             }
                         });
 
@@ -322,6 +345,7 @@
                                     var acczwhllr = bodyEdit.find('#acczwhllr').val();
                                     var accybody = bodyEdit.find('#accybody').val();
                                     var accxbody = bodyEdit.find('#accxbody').val();
+                                    var enginespeed = bodyEdit.find('#enginespeed').val();
                                     if (vehicleidtext != "" && importinputpath != "" && importresultpath != "" 
                                         && importgpsreductiontimes != "" && importaccreductiontimes != "" && importwftreductiontimes != "") {
                                         $.ajax({
@@ -349,6 +373,9 @@
                                                 acczwhllr: acczwhllr,
                                                 accybody: accybody,
                                                 accxbody: accxbody,
+                                                enginespeed:enginespeed,
+                                                importpumacheck: iframeEdit.importpumacheck ? 1 : 0,
+                                                importengspdcheck: iframeEdit.importengspdcheck ? 1 : 0,
                                                 statisticimportcheck: iframeEdit.statisticimportcheck ? 1 : 0,
                                                 gpsimportcheck: iframeEdit.gpsimportcheck ? 1 : 0,
                                                 speedimportcheck: iframeEdit.speedimportcheck ? 1 : 0,
@@ -375,6 +402,7 @@
                                         //console.log(abscheck);
                                     }
                                 },
+                                //点击添加成功后出现的选项，有默认值
                                 success: function (layero, index) {
                                     bodyEdit = layer.getChildFrame('body', index);
                                     iframeEdit = window[layero.find('iframe')[0]['name']];
@@ -391,6 +419,7 @@
                                     bodyEdit.find('#acczwhllr').val("Acc_Z_Whl_LR");
                                     bodyEdit.find('#accybody').val("Acc_Y_ST_LF");
                                     bodyEdit.find('#accxbody').val("Acc_X_ST_LF");
+                                    bodyEdit.find('#enginespeed').val("enspdhsc1");
                                 }
                             });
                         }

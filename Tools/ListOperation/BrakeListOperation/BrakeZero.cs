@@ -22,8 +22,6 @@ namespace Tools.ListOperation
                 {
                     brakelist[i] = 0;
                 }
-               
-
             }
         }
     }

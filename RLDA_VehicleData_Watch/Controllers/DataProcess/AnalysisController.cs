@@ -31,7 +31,9 @@ namespace RLDA_VehicleData_Watch.Controllers
         private readonly ISpeedDistribution_ACC_IBLL _ISpeedDistribution_ACC_Service;
         private readonly IThrottleDistribution_IBLL _IThrottleDistribution_Service;
         private readonly ISteeringDistribution_IBLL _ISteeringDistribution_Service;
-
+        private readonly IEngineSpeedDisDistribution_IBLL _IEngineSpeedDisDistribution_IBLL;
+        private readonly IEngineSpeedTimeDistribution_IBLL _IEngineSpeedTimeDistribution_IBLL;
+        
         private readonly IMemoryCache _memoryCache;//内存缓存
 
         private readonly IGPSRecord_IBLL _IGPSRecord_Service;
@@ -40,7 +42,11 @@ namespace RLDA_VehicleData_Watch.Controllers
         private  static GetVehicleParafromSql _getVehicleParafromSql;
 
         
-        public AnalysisController(IAnalysisData_WFT_IBLL IAnalysisData_WFT_Service, IAnalysisData_ACC_IBLL IAnalysisData_ACC_Service, ISpeedDistribution_ACC_IBLL ISpeedDistribution_ACC_Service,IBrakeDistribution_IBLL IBrakeDistribution_Service, IBumpDistribution_IBLL IBumpDistribution_Service, ISteeringDistribution_IBLL ISteeringDistribution_Service, IGPSRecord_IBLL IGPSRecord_Service,  IThrottleDistribution_IBLL IThrottleDistribution_Service, ILogger<AnalysisController> logger,IMemoryCache memoryCache, DbContext db, GetVehicleParafromSql getVehicleParafromSql)
+        public AnalysisController(IAnalysisData_WFT_IBLL IAnalysisData_WFT_Service, IAnalysisData_ACC_IBLL IAnalysisData_ACC_Service, ISpeedDistribution_ACC_IBLL ISpeedDistribution_ACC_Service,
+            IBrakeDistribution_IBLL IBrakeDistribution_Service, IBumpDistribution_IBLL IBumpDistribution_Service, 
+            ISteeringDistribution_IBLL ISteeringDistribution_Service, IGPSRecord_IBLL IGPSRecord_Service, 
+            IEngineSpeedDisDistribution_IBLL IEngineSpeedDisDistribution_IBLL, IEngineSpeedTimeDistribution_IBLL IEngineSpeedTimeDistribution_IBLL,
+            IThrottleDistribution_IBLL IThrottleDistribution_Service, ILogger<AnalysisController> logger,IMemoryCache memoryCache, DbContext db, GetVehicleParafromSql getVehicleParafromSql)
         {
             _IAnalysisData_WFT_Service = IAnalysisData_WFT_Service;
             _IAnalysisData_ACC_Service = IAnalysisData_ACC_Service;
@@ -49,6 +55,8 @@ namespace RLDA_VehicleData_Watch.Controllers
             _IBumpDistribution_Service = IBumpDistribution_Service;
             _IThrottleDistribution_Service = IThrottleDistribution_Service;
             _ISteeringDistribution_Service = ISteeringDistribution_Service;
+            _IEngineSpeedDisDistribution_IBLL = IEngineSpeedDisDistribution_IBLL;
+            _IEngineSpeedTimeDistribution_IBLL = IEngineSpeedTimeDistribution_IBLL;
             _IGPSRecord_Service = IGPSRecord_Service;
             this._logger = logger;
             _memoryCache = memoryCache;
@@ -56,35 +64,7 @@ namespace RLDA_VehicleData_Watch.Controllers
             _getVehicleParafromSql = getVehicleParafromSql;
             
         }
-        /// <summary>
-        /// 先获得此车辆的数据库里的配置信息并存储到_vehicleIDPara里
-        /// </summary>
-        /// <param name="vehicleid"></param>
-        /// <returns></returns>
-        //public string GetVehiclePara( string vehicleid)
-        //{
-        //    //_db.vehicleid = vehicleid;
-        //    var t_vehiclemaster = _db.Set<t_vehiclemaster>().AsNoTracking().Where(a => a.vehicleid == vehicleid).FirstOrDefault();
-        //    var t_vehicleimportpara = _db.Set<t_vehicleimportpara>().AsNoTracking().Where(a => a.vehicleid == vehicleid).FirstOrDefault();
-        //    var t_vehiclecomputepara = _db.Set<t_vehiclecomputepara>().AsNoTracking().Where(a => a.vehicleid == vehicleid).FirstOrDefault();
-        //    if (t_vehicleimportpara != null && t_vehiclecomputepara != null && t_vehiclemaster != null)
-        //    {
-        //        _vehicleIDPara = MyConfigforVehicleID.GetVehicleConfigurationfromsql(ref _vehicleIDPara, t_vehiclemaster, t_vehicleimportpara, t_vehiclecomputepara);
-        //        if (_vehicleIDPara.analysisaccess == 1)
-        //        {
-        //            return "yes";
-        //        }
-        //        else
-        //        {
-        //            return "此车辆没有分析权限！请先添加！";
-        //        }
-        //    }
-        //    else
-        //    {
-        //        return "数据库未添加此车辆！";
-        //    }
-        //}
-
+      
         public string GetVehicleParafromSql(string vehicleid)
         {
             //先用内存缓存来存储车辆参数
@@ -95,6 +75,7 @@ namespace RLDA_VehicleData_Watch.Controllers
            
             if (re != null)
             { 
+                
                 //初始化车辆参数字典，由于字典是静态字段，不同实例可以共享
                 if (paradict.Count != 0)
                 {
@@ -135,18 +116,10 @@ namespace RLDA_VehicleData_Watch.Controllers
                 {
                     if (paradict[vehicleid].analysisaccess == 1)
                     {
-                        //if (AnalysisVehicleID.Contains(vehicleid))
-                        //{
                             var sd = Convert.ToDateTime(startdate);
                             var ed = Convert.ToDateTime(enddate);
                             var SpeedList = await _ISpeedDistribution_ACC_Service.LoadSpeedDistribution(sd, ed, vehicleid);
-                            //var json = Json(SpeedList);//这里speedlist是iquerable匿名类型，不知为什么无法传给前端layui表格，所以只能直接传json数据
                             return SpeedList;
-                        //}
-                        //else
-                        //{
-                        //    return null;
-                        //}
                     }
                     else
                     {
@@ -162,9 +135,61 @@ namespace RLDA_VehicleData_Watch.Controllers
                 {
                     return Json("No");
                 }
-                    
-           
-           
+        }
+
+        public async Task<IActionResult> engspdDisAnalysis(string startdate, string enddate, string vehicleid)
+        {
+
+            var engspdcash = await _memoryCache.GetOrCreateAsync<IQueryable>("engspdDisAnalysis" + startdate + enddate + vehicleid, async value =>
+            {
+                if (paradict[vehicleid].analysisaccess == 1)
+                {
+                    var sd = Convert.ToDateTime(startdate);
+                    var ed = Convert.ToDateTime(enddate);
+                    var SpeedList = await _IEngineSpeedDisDistribution_IBLL.LoadEngspdDisDistribution(sd, ed, vehicleid);
+                    return SpeedList;
+                }
+                else
+                {
+                    return null;
+                }
+
+            });
+            if (engspdcash != null)
+            {
+                return Json(engspdcash);
+            }
+            else
+            {
+                return Json("No");
+            }
+        }
+        public async Task<IActionResult> engspdTimeAnalysis(string startdate, string enddate, string vehicleid)
+        {
+
+            var engspdtimecash = await _memoryCache.GetOrCreateAsync<IQueryable>("engspdTimeAnalysis" + startdate + enddate + vehicleid, async value =>
+            {
+                if (paradict[vehicleid].analysisaccess == 1)
+                {
+                    var sd = Convert.ToDateTime(startdate);
+                    var ed = Convert.ToDateTime(enddate);
+                    var EngspdTimeList = await _IEngineSpeedTimeDistribution_IBLL.LoadEngspdTimeDistribution(sd, ed, vehicleid);
+                    return EngspdTimeList;
+                }
+                else
+                {
+                    return null;
+                }
+
+            });
+            if (engspdtimecash != null)
+            {
+                return Json(engspdtimecash);
+            }
+            else
+            {
+                return Json("No");
+            }
         }
         /// <summary>
         /// 根据所选的时间范围来传给前端每天的里程分布
@@ -560,5 +585,6 @@ namespace RLDA_VehicleData_Watch.Controllers
         }
 
       
+
     }
 }

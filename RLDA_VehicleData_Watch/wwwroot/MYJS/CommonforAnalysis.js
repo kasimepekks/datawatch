@@ -52,3 +52,7 @@ var urlgetgpsdata = '/Analysis/GPSAnalysis';
 var urlgetaccandisdata = '/Analysis/ACCandDisAnalysis';
 
 var urlgettextdata = '/Analysis/TextperDayAnalysis';
+
+var urlgetengspddis = '/Analysis/engspdDisAnalysis';
+
+var urlgetengspdtime = '/Analysis/engspdTimeAnalysis';

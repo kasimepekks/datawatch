@@ -24,6 +24,7 @@ namespace Tools.ListOperation.StatisticAccListOperation
                 statisticentity.Filename = name;
                 statisticentity.Datadate = Convert.ToDateTime(datetime);
                 statisticentity.Chantitle = tablehead[l + 1];
+                //statisticentity.fileindex = index;
 
                 //注意这里由于计算的列的格式是string类型，用max或min计算会出问题，所以必须先转换再求maxmin
 

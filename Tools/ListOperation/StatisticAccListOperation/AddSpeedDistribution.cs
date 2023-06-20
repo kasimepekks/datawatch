@@ -10,6 +10,15 @@ namespace Tools.ListOperation.StatisticAccListOperation
 {
    public static class AddSpeedDistribution
     {
+        /// <summary>
+        /// 添加速度里程分布数据库数据
+        /// </summary>
+        /// <param name="speed"></param>
+        /// <param name="l0_Time"></param>
+        /// <param name="vehicleid"></param>
+        /// <param name="name"></param>
+        /// <param name="datetime"></param>
+        /// <returns></returns>
         public static List<Speeddistribution> addspeedlist(List<double> speed, List<double> l0_Time, string vehicleid,string name,string datetime)
         {
             

@@ -44,3 +44,7 @@ D:\VS_Project\SourceCode\data-monitor\IDAL\obj\Release\netcoreapp3.1\IDAL.csproj
 D:\VS_Project\SourceCode\data-monitor\IDAL\obj\Release\netcoreapp3.1\IDAL.csproj.CopyComplete
 D:\VS_Project\SourceCode\data-monitor\IDAL\obj\Release\netcoreapp3.1\IDAL.dll
 D:\VS_Project\SourceCode\data-monitor\IDAL\obj\Release\netcoreapp3.1\IDAL.pdb
+D:\VS_Project\编译后的项目\idal\Release\netcoreapp3.1\mysqlconnection.json
+D:\VS_Project\编译后的项目\idal\Release\netcoreapp3.1\IDAL.deps.json
+D:\VS_Project\编译后的项目\idal\Release\netcoreapp3.1\IDAL.dll
+D:\VS_Project\编译后的项目\idal\Release\netcoreapp3.1\IDAL.pdb

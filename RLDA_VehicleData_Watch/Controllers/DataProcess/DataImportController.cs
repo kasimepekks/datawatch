@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Tools;
 using Tools.DateTimeOperation;
 using Tools.FileOperation;
+using Tools.ListOperation.EngineSpeedListOperation;
 using Tools.ListOperation.StatisticAccListOperation;
 using Tools.ListOperation.WFTListOperation;
 using Tools.MyConfig;
@@ -22,11 +23,14 @@ namespace RLDA_VehicleData_Watch.Controllers.DataProcess
     {
         private readonly ILogger<DataImportController> _logger;
         private readonly IAnalysisData_ACC_IBLL _IAnalysisData_ACC_Service;
+        private readonly IAnalysisData_PUMA_IBLL _IAnalysisData_PUMA_Service;
         private readonly IAnalysisData_WFT_IBLL _IAnalysisData_WFT_Service;
         private readonly IBrakeDistribution_IBLL _IBrakeDistribution_IBLL;
         private readonly ISpeedDistribution_ACC_IBLL _ISpeedDistribution_ACC_IBLL;
         private readonly ISteeringDistribution_IBLL _ISteeringDistribution_IBLL;
         private readonly IThrottleDistribution_IBLL _IThrottleDistribution_IBLL;
+        private readonly IEngineSpeedDisDistribution_IBLL _IEngineSpeedDisDistribution_IBLL;
+        private readonly IEngineSpeedTimeDistribution_IBLL _IEngineSpeedTimeDistribution_IBLL;
         private readonly IGPSRecord_IBLL _IGPSRecord_IBLL;
         private readonly IBumpDistribution_IBLL _IBumpDistribution_IBLL;
         private readonly IMemoryCache _memoryCache;//内存缓存
@@ -35,20 +39,25 @@ namespace RLDA_VehicleData_Watch.Controllers.DataProcess
         private static Dictionary<string, VehicleIDPara> paradict = new Dictionary<string, VehicleIDPara>();//存储每个车的里程
         private static string inputpath;
         private static string resultpath;
-        
-       
+        private static string[] variablenames= { "infostatisticresult", "infobrkresult", "infobmpresult", "infogpsresult", "infospdresult", "infostrresult", "infothrresult", "infoengspddisresult", "infoengspdtimeresult" };
 
-        public DataImportController(IAnalysisData_ACC_IBLL IAnalysisData_ACC_Service, IAnalysisData_WFT_IBLL IAnalysisData_WFT_Service,
+
+
+        public DataImportController(IAnalysisData_ACC_IBLL IAnalysisData_ACC_Service, IAnalysisData_PUMA_IBLL IAnalysisData_PUMA_Service, IAnalysisData_WFT_IBLL IAnalysisData_WFT_Service,
             IBrakeDistribution_IBLL brakeDistribution_IBLL , ISpeedDistribution_ACC_IBLL speedDistribution_ACC_IBLL , ISteeringDistribution_IBLL steeringDistribution_IBLL,
-           IThrottleDistribution_IBLL throttleDistribution_IBLL , IGPSRecord_IBLL gPSRecord_IBLL, IBumpDistribution_IBLL bumpDistribution_IBLL, ILogger<DataImportController> logger, IMemoryCache memoryCache, DbContext db, GetVehicleParafromSql getVehicleParafromSql)
+           IThrottleDistribution_IBLL throttleDistribution_IBLL , IGPSRecord_IBLL gPSRecord_IBLL, IBumpDistribution_IBLL bumpDistribution_IBLL, 
+           IEngineSpeedDisDistribution_IBLL IEngineSpeedDisDistribution_IBLL, IEngineSpeedTimeDistribution_IBLL IEngineSpeedTimeDistribution_IBLL, ILogger<DataImportController> logger, IMemoryCache memoryCache, DbContext db, GetVehicleParafromSql getVehicleParafromSql)
         {
             _IAnalysisData_ACC_Service = IAnalysisData_ACC_Service;
+            _IAnalysisData_PUMA_Service= IAnalysisData_PUMA_Service;
             _IAnalysisData_WFT_Service = IAnalysisData_WFT_Service;
             _IBrakeDistribution_IBLL = brakeDistribution_IBLL;
             _ISpeedDistribution_ACC_IBLL=speedDistribution_ACC_IBLL;
             _ISteeringDistribution_IBLL=steeringDistribution_IBLL;
             _IThrottleDistribution_IBLL=throttleDistribution_IBLL;
-            _IGPSRecord_IBLL=gPSRecord_IBLL;
+            _IEngineSpeedDisDistribution_IBLL=IEngineSpeedDisDistribution_IBLL ;
+            _IEngineSpeedTimeDistribution_IBLL = IEngineSpeedTimeDistribution_IBLL;
+            _IGPSRecord_IBLL =gPSRecord_IBLL;
             _IBumpDistribution_IBLL=bumpDistribution_IBLL;
             _logger = logger;
             _memoryCache= memoryCache;
@@ -89,7 +98,7 @@ namespace RLDA_VehicleData_Watch.Controllers.DataProcess
                 }
                 else
                 {
-                    return "此车辆没有分析权限！请先添加！";
+                    return "此车辆没有导入权限！请先添加！";
                 }
             }
             else
@@ -158,6 +167,8 @@ namespace RLDA_VehicleData_Watch.Controllers.DataProcess
                                         List<Speeddistribution> spdlist = new List<Speeddistribution>();
                                         List<Streeringrecognition> strlist = new List<Streeringrecognition>();
                                         List<Throttlerecognition> thrlist = new List<Throttlerecognition>();
+                                        List<EngineRpmDistribution_Distance> engspddislist = new List<EngineRpmDistribution_Distance>();
+                                        List<EngineRpmDistribution_Time> engspdtimelist = new List<EngineRpmDistribution_Time>();
                                         bool canbeimported = true;
                                         //先判断是否要导入gps，如果要导入，先去数据库创建此车辆的gps表，如数据库有此车的gps表，则不创建（可以自动创建了，不需要再去数据库创建）
                                         if (paradict[vehicleid].GPSImport == 1)
@@ -165,6 +176,7 @@ namespace RLDA_VehicleData_Watch.Controllers.DataProcess
                                             await _IGPSRecord_IBLL.CreateTable(vehicleid);
                                         }
                                         Console.WriteLine("开始读取数据"+ DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                                        //int fileindex=0;//添加一个文件index序号，存储到数据库中，对后面单位里程的分析数据查询有帮助
                                         foreach (var file in filelist)
                                         {
                                             //读取单个csv文件的数据并存储到t
@@ -176,6 +188,22 @@ namespace RLDA_VehicleData_Watch.Controllers.DataProcess
                                             var infospdresult = _ISpeedDistribution_ACC_IBLL.JudgeandMergeSpdDataperHalfHour(file, t, ref spdlist, vehicleid, in para);
                                             var infostrresult = _ISteeringDistribution_IBLL.JudgeandMergeSteeringDataperHalfHour(file, t, ref strlist, vehicleid, in para);
                                             var infothrresult = _IThrottleDistribution_IBLL.JudgeandMergeThrottleDataperHalfHour(file, t, ref thrlist, vehicleid, in para);
+                                            var infoengspddisresult = _IEngineSpeedDisDistribution_IBLL.JudgeandMergeEngSpdDisDataperHalfHour(file, t, ref engspddislist, vehicleid, in para);
+                                            var infoengspdtimeresult = _IEngineSpeedTimeDistribution_IBLL.JudgeandMergeEngSpdTimeDataperHalfHour(file, t, ref engspdtimelist, vehicleid, in para);
+
+                                            //string[] results = { infostatisticresult, infobrkresult, infobmpresult, infogpsresult, infospdresult, infostrresult, infothrresult, infoengspddisresult, infoengspdtimeresult };
+                                            //for (int j = 0; j < variablenames.Length; j++)
+                                            //{
+                                            //    if (results[i] != null)
+                                            //    {
+                                            //        _logger.LogInformation(results[i]);
+                                            //        importresult += results[i];
+                                            //        canbeimported = false;
+                                            //        goto gotoposition;
+                                            //    }
+                                            //}
+
+
                                             if (infostatisticresult != null)
                                             {
                                                 _logger.LogInformation(infostatisticresult);
@@ -225,7 +253,23 @@ namespace RLDA_VehicleData_Watch.Controllers.DataProcess
                                                 canbeimported = false;
                                                 break;
                                             }
+                                            if (infoengspddisresult != null)
+                                            {
+                                                _logger.LogInformation(infoengspddisresult);
+                                                importresult += infoengspddisresult;
+                                                canbeimported = false;
+                                                break;
+                                            }
+                                            if (infoengspdtimeresult != null)
+                                            {
+                                                _logger.LogInformation(infoengspdtimeresult);
+                                                importresult += infoengspdtimeresult;
+                                                canbeimported = false;
+                                                break;
+                                            }
+                                            //fileindex++;
                                         }
+                                        //gotoposition:
                                         Console.WriteLine("读取数据完毕" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                                         Console.WriteLine("开始存入数据" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                                         if (canbeimported)
@@ -275,6 +319,22 @@ namespace RLDA_VehicleData_Watch.Controllers.DataProcess
                                                 //_db.BulkInsert(spdlist);
                                             }
                                             _logger.LogInformation(vehicleid + "日期为" + date + "input里速度里程数据有" + spdlist.Count + "条");
+                                            if (engspddislist.Count > 0)
+                                            {
+                                                var engspddisfinallist = EngineSpeedDistanceCombined.engspddisCombine(engspddislist, vehicleid);
+                                                _IEngineSpeedDisDistribution_IBLL.AddAllEntity(engspddislist, vehicleid);
+                                                //_db.BulkInsert(spdlist);
+                                            }
+                                            _logger.LogInformation(vehicleid + "日期为" + date + "input里转速里程数据有" + engspddislist.Count + "条");
+                                            if (engspdtimelist.Count > 0)
+                                            {
+                                                var engspdtimefinallist = EngineSpeedTimeCombined.engspdtimeCombine(engspdtimelist, vehicleid);
+                                                _IEngineSpeedTimeDistribution_IBLL.AddAllEntity(engspdtimelist, vehicleid);
+                                                //_db.BulkInsert(spdlist);
+                                            }
+                                            _logger.LogInformation(vehicleid + "日期为" + date + "input里转速时间数据有" + engspdtimelist.Count + "条");
+
+
                                             importresult += vehicleid + "日期为" + date + "的input数据导入成功，详细情况请查看日志" + System.Environment.NewLine;
                                             _logger.LogInformation("****************" + date + "  InputEnd****************");
                                         }
@@ -297,66 +357,74 @@ namespace RLDA_VehicleData_Watch.Controllers.DataProcess
                                 _logger.LogInformation(vehicleid + "日期为" + date + "的input数据已有导入flag，不需要再次导入");
                                 importresult += vehicleid + "日期为" + date + "的input数据已有导入flag，不需要再次导入" + System.Environment.NewLine;
                             }
-
-                            if (!FileOperator.DataImportCompleteFlag(outputfiletimeinfo))
+                            if (paradict[vehicleid].WFTImport == 1)
                             {
-                                //判断result子文件里数据是否上传完整
-                                if (FileOperator.DataTransferCompleteFlag(outputfiletimeinfo, date))
+                                if (!FileOperator.DataImportCompleteFlag(outputfiletimeinfo))
                                 {
-                                    _logger.LogInformation(date + "的result数据开始手动导入" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-
-                                    //开始result上传
-                                    FileInfo[] filelist = FileOperator.Isfileexist(outputfiletimeinfo);
-                                    if (filelist != null && filelist.Length > 0)
+                                    //判断result子文件里数据是否上传完整
+                                    if (FileOperator.DataTransferCompleteFlag(outputfiletimeinfo, date))
                                     {
-                                        List<SatictisAnalysisdataWft>wftlist = new List<SatictisAnalysisdataWft>();
-                                        bool canbeimported = true;//标识是否可以导入，一旦数据有问题，就赋予false，并且跳出循环
-                                        foreach (var file in filelist)
+                                        _logger.LogInformation(date + "的result数据开始手动导入" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                                        //开始result上传
+                                        FileInfo[] filelist = FileOperator.Isfileexist(outputfiletimeinfo);
+                                        if (filelist != null && filelist.Length > 0)
                                         {
-                                            var t = await CSVFileImport.LoadCSVWFTData(file, paradict[vehicleid]);
-                                            var infowftesult = _IAnalysisData_WFT_Service.JudgeandMergeWFTDataperHalfHour(file, t, ref wftlist, vehicleid, in para);
-                                            if(infowftesult != null)
+                                            List<SatictisAnalysisdataWft> wftlist = new List<SatictisAnalysisdataWft>();
+                                            bool canbeimported = true;//标识是否可以导入，一旦数据有问题，就赋予false，并且跳出循环
+                                            foreach (var file in filelist)
                                             {
-                                                _logger.LogInformation(infowftesult);
-                                                canbeimported = false;
-                                                break;
+                                                var t = await CSVFileImport.LoadCSVWFTData(file, paradict[vehicleid]);
+                                                var infowftesult = _IAnalysisData_WFT_Service.JudgeandMergeWFTDataperHalfHour(file, t, ref wftlist, vehicleid, in para);
+                                                if (infowftesult != null)
+                                                {
+                                                    _logger.LogInformation(infowftesult);
+                                                    canbeimported = false;
+                                                    break;
+                                                }
                                             }
-                                        }
-                                        if (canbeimported)
-                                        {
-                                            _logger.LogInformation("****************" + date + "  ResultStart****************");
-
-                                            var wftfinallist = WFTCombined.wftcombine(wftlist, vehicleid);
-                                            if (wftfinallist.Count > 0)
+                                            if (canbeimported)
                                             {
-                                                _db.BulkInsert(wftfinallist);
+                                                _logger.LogInformation("****************" + date + "  ResultStart****************");
+
+                                                var wftfinallist = WFTCombined.wftcombine(wftlist, vehicleid);
+                                                if (wftfinallist.Count > 0)
+                                                {
+                                                    _db.BulkInsert(wftfinallist);
+                                                }
+                                                _logger.LogInformation(vehicleid + "日期为" + date + "result里WFT数据有" + wftfinallist.Count + "条");
+                                                importresult += vehicleid + "日期为" + date + "的result数据导入成功，详细情况请查看日志" + System.Environment.NewLine;
+
+                                                _logger.LogInformation("****************" + date + "  ResultEnd****************");
+
                                             }
-                                            _logger.LogInformation(vehicleid + "日期为" + date + "result里WFT数据有" + wftfinallist.Count + "条");
-                                            importresult += vehicleid + "日期为" + date + "的result数据导入成功，详细情况请查看日志" + System.Environment.NewLine;
-
-                                            _logger.LogInformation("****************" + date + "  ResultEnd****************");
+                                            else
+                                            {
+                                                importresult += vehicleid + "日期为" + date + "的result数据有错误，无法导入" + System.Environment.NewLine;
+                                            }
 
                                         }
-                                        else
-                                        {
-                                            importresult += vehicleid + "日期为" + date + "的result数据有错误，无法导入" + System.Environment.NewLine;
-                                        }
+
 
                                     }
-
-
+                                    else
+                                    {
+                                        _logger.LogInformation(vehicleid + "日期为" + date + "的result数据还没有上传完毕");
+                                        importresult += vehicleid + "日期为" + date + "的result数据还没有上传完毕" + System.Environment.NewLine;
+                                    }
                                 }
                                 else
                                 {
-                                    _logger.LogInformation(vehicleid + "日期为" + date + "的result数据还没有上传完毕");
-                                    importresult += vehicleid + "日期为" + date + "的result数据还没有上传完毕" + System.Environment.NewLine;
+                                    _logger.LogInformation(vehicleid + "日期为" + date + "的result数据已有导入flag，不需要再次导入");
+                                    importresult += vehicleid + "日期为" + date + "的result数据已有导入flag，不需要再次导入" + System.Environment.NewLine;
                                 }
                             }
                             else
                             {
-                                _logger.LogInformation(vehicleid + "日期为" + date + "的result数据已有导入flag，不需要再次导入");
-                                importresult += vehicleid + "日期为" + date + "的result数据已有导入flag，不需要再次导入" + System.Environment.NewLine;
+                                _logger.LogInformation(vehicleid + "日期为" + date + "的result数据未开启wft导入权限");
+                                importresult += vehicleid + "日期为" + date + "的result数据未开启wft导入权限" + System.Environment.NewLine;
                             }
+                        
 
                         }
                         var memoryCacheALL = (MemoryCache)_memoryCache;//先转成MemoryCache，否则无法使用Compact方法
@@ -383,10 +451,122 @@ namespace RLDA_VehicleData_Watch.Controllers.DataProcess
             }
 
         }
-           
 
 
-        
+        public async Task<string> PumaDataImport(string startdate, string enddate, string vehicleid)
+        {
+            if (paradict[vehicleid].importaccess == 1)//判断是否允许导入数据
+            {
+
+                if (startdate != null && enddate != null)
+                {
+                    int span = DateTimeOperation.DateDiff(startdate, enddate);
+                    inputpath = paradict[vehicleid].importinputpath;
+                    //resultpath = paradict[vehicleid].importresultpath;
+                    string importresult = "";
+                    try
+                    {
+                        var para = paradict[vehicleid];
+                        for (int i = 0; i < span + 1; i++)
+                        {
+                            string date = FileOperator.DatetoName(Convert.ToDateTime(startdate).AddDays(i).ToString("yyyy-MM-dd")).Substring(5);//当前计算的日期文件夹名称
+                            string inputfiletimeinfo = Path.Combine(inputpath, date);
+                            //string outputfiletimeinfo = Path.Combine(resultpath, date);
+                            //判断input子文件夹里是否有导入的flag
+                            if (!FileOperator.DataImportCompleteFlag(inputfiletimeinfo))
+                            {
+                                //判断是否有数据上传完整
+                                if (FileOperator.DataTransferCompleteFlag(inputfiletimeinfo, date))
+                                {
+                                    _logger.LogInformation(date + "的input数据开始手动里程模式导入" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                                    FileInfo[] filelist = FileOperator.Isfileexist(inputfiletimeinfo);
+                                    if (filelist != null && filelist.Length > 0)
+                                    {
+                                        List<Pumapermileage> pumalist = new List<Pumapermileage>();
+                                        
+                                        bool canbeimported = true;
+                                       
+                                        Console.WriteLine("开始读取里程模式数据" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                                        //int fileindex=0;//添加一个文件index序号，存储到数据库中，对后面单位里程的分析数据查询有帮助
+                                        foreach (var file in filelist)
+                                        {
+                                            //读取单个csv文件的数据并存储到t
+                                            var t = await CSVFileImport.LoadCSVMileageData(file, paradict[vehicleid]);
+                                            var infomileageresult = _IAnalysisData_PUMA_Service.JudgeandMergeMileageData(file, t, ref pumalist, vehicleid, in para);
+                                            if (infomileageresult != null)
+                                            {
+                                                _logger.LogInformation(infomileageresult);
+                                                importresult += infomileageresult;
+                                                canbeimported = false;
+                                                break;
+                                            }
+
+                                        }
+                                        //gotoposition:
+                                        Console.WriteLine("读取里程模式数据完毕" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                                        Console.WriteLine("开始存入里程模式数据" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                                        if (canbeimported)
+                                        {
+                                            _logger.LogInformation("****************" + date + "  InputStart****************");
+
+                                            if (pumalist.Count > 0)
+                                            {
+                                                _IAnalysisData_PUMA_Service.AddAllEntity(pumalist, vehicleid);
+                                                //_db.BulkInsert(strlist);
+                                            }
+                                            _logger.LogInformation(vehicleid + "日期为" + date + "input里转向数据有" + pumalist.Count + "条");
+
+
+                                            importresult += vehicleid + "日期为" + date + "的input数据里程模式导入成功，详细情况请查看日志" + System.Environment.NewLine;
+                                            _logger.LogInformation("****************" + date + "  InputEnd****************");
+                                        }
+                                        Console.WriteLine("存入数据完毕" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                                    }
+                                    else
+                                    {
+                                        importresult += vehicleid + "日期为" + date + "的input路径下无文件" + System.Environment.NewLine;
+                                    }
+                                }
+                                else
+                                {
+                                    _logger.LogInformation(vehicleid + "日期为" + date + "的input数据还没有上传完毕");
+                                    importresult += vehicleid + "日期为" + date + "的input数据还没有上传完毕" + System.Environment.NewLine;
+                                }
+
+                            }
+                            else
+                            {
+                                _logger.LogInformation(vehicleid + "日期为" + date + "的input数据已有导入flag，不需要再次导入");
+                                importresult += vehicleid + "日期为" + date + "的input数据已有导入flag，不需要再次导入" + System.Environment.NewLine;
+                            }
+
+                           
+                        }
+                        var memoryCacheALL = (MemoryCache)_memoryCache;//先转成MemoryCache，否则无法使用Compact方法
+                        memoryCacheALL.Compact(1.0);//清除所有缓存
+                                                    //_memoryCache.Compact(1.0);//一旦有新的数据导入到数据库中，就执行一次内存重置，防止还用之前的缓存来展示数据
+                    }
+                    catch (Exception ex)
+                    {
+                        importresult = "程序有错误，请查看日志！";
+                        _logger.LogInformation(ex + "错误发生在" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"));
+                    }
+                    return importresult;
+                }
+                else
+                {
+                    return vehicleid + "日期选择为空";
+
+                }
+
+            }
+            else
+            {
+                return "未开启允许导入设置";
+            }
+
+        }
+
 
         //数据库中查询出最新数据的日期返回给前端显示
         public string FinishedDate(string vehicleid)
@@ -403,7 +583,21 @@ namespace RLDA_VehicleData_Watch.Controllers.DataProcess
                 }
 
         }
+        //数据库中查询出最新数据的日期返回给前端显示
+        public string FinishedPumaDate(string vehicleid)
+        {
+            var isnull = _IAnalysisData_PUMA_Service.LoadEntities(a => a.vehicle == vehicleid, vehicleid).OrderBy(a => a.filedate).Select(a => a.filedate).LastOrDefault();
+            if (isnull != null)
+            {
+                
+                return isnull.AddDays(1).ToShortDateString();
+            }
+            else
+            {
+                return "此车辆目前还没有数据";
+            }
 
+        }
         public string ShowConfiguration(string vehicleid)
         {
             string wft = paradict[vehicleid].WFTImport == 1 ? "true  " : "false  ";
@@ -414,14 +608,18 @@ namespace RLDA_VehicleData_Watch.Controllers.DataProcess
             string speed = paradict[vehicleid].SpeedImport == 1 ? "true  " : "false  ";
             string bump = paradict[vehicleid].BumpImport == 1 ? "true  " : "false  ";
             string statistic = paradict[vehicleid].StatisticImport == 1 ? "true" : "false";
-            var  importresult= "WFT:" + wft + System.Environment.NewLine+
-                "GPS:"+ gps + System.Environment.NewLine 
-                +"Brake:"+ brake + System.Environment.NewLine
-                +"Throttle:"+ throttle + System.Environment.NewLine
-                + "Steering:" + steering + System.Environment.NewLine
-                + "Speed:" + speed + System.Environment.NewLine
-                + "Bump:" +bump + System.Environment.NewLine
-                + "Statistic:" + statistic;
+            string engspd = paradict[vehicleid].importengspd == 1 ? "true" : "false";
+            string puma = paradict[vehicleid].importpuma == 1 ? "true" : "false";
+            var  importresult= "测量轮:" + wft + System.Environment.NewLine+
+                "经纬度:"+ gps + System.Environment.NewLine 
+                +"刹车:"+ brake + System.Environment.NewLine
+                +"油门:"+ throttle + System.Environment.NewLine
+                + "转向:" + steering + System.Environment.NewLine
+                + "速度:" + speed + System.Environment.NewLine
+                + "冲击:" +bump + System.Environment.NewLine
+                + "统计值:" + statistic + System.Environment.NewLine
+                + "单位里程:" + puma + System.Environment.NewLine
+                + "转速:" + engspd;
             return importresult;
         }
         

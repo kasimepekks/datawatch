@@ -10,8 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Tools;
-using Tools.AddDamage;
-using Tools.ListOperation.ThrottleListOperation;
+
+
 using Tools.ListOperation.WFTListOperation;
 using Tools.MyConfig;
 using static Tools.FileOperation.CSVFileImport;
@@ -174,7 +174,7 @@ namespace DAL.SH_ADF0979DAL
             var time = Convert.ToDateTime(file.Name.Split('-')[0].Replace("_", "-"));
             if (vehicleIDPara.WFTImport == 1)
             {
-                var sqllist = _DB.SatictisAnalysisdataWfts.Where(a => a.Datadate > time && a.Datadate < time.AddDays(1)).Select(a => a.VehicleId).AsNoTracking().FirstOrDefault();
+                var sqllist = _DB.SatictisAnalysisdataWfts.Where(a => a.Datadate > time && a.Datadate < time.AddDays(1) && a.VehicleId == vehicleid).Select(a => a.VehicleId).AsNoTracking().FirstOrDefault();
                 if (string.IsNullOrEmpty(sqllist))
                 {
                     if (importstruct.Iscontinue)
@@ -193,12 +193,12 @@ namespace DAL.SH_ADF0979DAL
                 }
                 else
                 {
-                    return ($"此文件{file.Name}进行WFT计算时已导入过或没开启导入权限，须删除后再重新导入！{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}");
+                    return ($"此文件{file.Name}进行WFT计算时已导入过，须删除后再重新导入！{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}");
                 }
             }
             else
             {
-                return null;
+                return ($"此文件{file.Name}进行WFT计算时未开启wft导入权限，须删除后再重新导入！{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}");
             }
         }
 

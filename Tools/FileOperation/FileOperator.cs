@@ -282,7 +282,7 @@ namespace Tools
         }
 
         /// <summary>
-        /// 筛选数据库中填写的csv文件里的字段名来读取数据到List<List<double>>，并降低了采样数
+        /// 监控用的读取数据方法。筛选数据库中填写的csv文件里的字段名来读取数据到List<List<double>>，并降低了采样数
         /// </summary>
         /// <param name="filefullpath">文件路径</param>
         /// <param name="csvcollumnname">数据库里填写的字段名</param>

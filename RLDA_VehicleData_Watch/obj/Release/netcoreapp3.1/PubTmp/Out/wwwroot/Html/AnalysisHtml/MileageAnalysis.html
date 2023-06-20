@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>单位里程数据分析</title>
+    <script src="../../MYJS/Commonforpumamileagedisplay.js"></script>
+</head>
+<body>
+    <br />
+    <br />
+    <div class="pumamileageform">
+        <div class="layui-form">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <div class="layui-input-inline">
+                        <button class="layui-btn" id="pumamileagedatadisplay">数据展示</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-collapse">
+
+        <div class="layui-colla-item">
+            <h2 class="layui-colla-title">里程模式数据展示</h2>
+            <div class="layui-colla-content layui-show">
+                <table id="pumamileagedata" lay-filter="pumamileagedata" lay-even></table>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm" lay-event="exportcsv">保存本地</button>
+        </div>
+    </script>
+
+    <script src="../../MYJS/Pumamileagedisplay.js"></script>
+
+</body>
+
+
+
+</html>

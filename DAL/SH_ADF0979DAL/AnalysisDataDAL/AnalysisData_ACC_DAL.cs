@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Tools;
-using Tools.AddDamage;
+
 using Tools.AddDistance;
 using Tools.Cash;
 using Tools.FileOperation;
@@ -29,7 +29,7 @@ using static Tools.FileOperation.CSVFileImport;
 namespace DAL.SH_ADF0979DAL
 {
   public  class AnalysisData_ACC_DAL : BaseDAL<SatictisAnalysisdataAcc>, IAnalysisData_ACC_IDAL
-  {
+    {
        
         public AnalysisData_ACC_DAL(datawatchContext DB) : base(DB)
         {
@@ -52,7 +52,7 @@ namespace DAL.SH_ADF0979DAL
             if (vehicleIDPara.StatisticImport == 1)
             {
                 _DB.vehicleid = vehicleid;
-                var sqllist = _DB.SatictisAnalysisdataAccs.Where(a => a.Datadate > time && a.Datadate < time.AddDays(1)).Select(a => a.VehicleId).AsNoTracking().FirstOrDefault();
+                var sqllist = _DB.SatictisAnalysisdataAccs.Where(a => a.Datadate > time && a.Datadate < time.AddDays(1) && a.VehicleId == vehicleid).Select(a => a.VehicleId).AsNoTracking().FirstOrDefault();
                 if (string.IsNullOrEmpty(sqllist))
                 {
                     if (importstruct.Iscontinue)

@@ -46,12 +46,12 @@ namespace Tools.ListOperation
                                 int ogappointslower = Convert.ToInt32(vehicleIDPara.Wheelbaselower * 3.6 * currentsamplerate / speedpeaklist[i]);
                                 int ogappointsupper = Convert.ToInt32(vehicleIDPara.Wheelbaseupper * 3.6 * currentsamplerate / speedpeaklist[i]);
                                 double t1 = 0,t2=0;
-                                                              
-                            
-                                //if(WFT_AZ_LFPeakTimeList[i]+ ogappointsupper <= (vehicleIDPara.Pointsperfile / vehicleIDPara.Reductiontimesforimport))//这里必须要判断LF出现peak以后LR是否出现在下一个文件里，也就是说LF的peak出现的太晚导致LR的peak没有出现,不考虑出现在下一个文件的peak
-                                //{
+                                //LF的time加上ogappointsupper后的值可能会超过speedlist的Count，所以要加判断
+                                if (WFT_AZ_LFPeakTimeList[i] + ogappointsupper < speedlist.Count)
+                                {
                                     for (int l = WFT_AZ_LFPeakTimeList[i]; l < WFT_AZ_LFPeakTimeList[i] + ogappointslower; l++)
                                     {
+
                                         t1 += speedlist[l];
                                     }
                                     for (int l = WFT_AZ_LFPeakTimeList[i]; l < WFT_AZ_LFPeakTimeList[i] + ogappointsupper; l++)
@@ -73,6 +73,8 @@ namespace Tools.ListOperation
                                             break;
                                         }
                                     }
+                                }
+                                    
 
                                 //}
 

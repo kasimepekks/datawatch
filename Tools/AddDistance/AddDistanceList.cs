@@ -41,15 +41,13 @@ namespace Tools.AddDistance
         /// <returns></returns>
         public static List<double> ReturnSingleDistance(List<double> speed, List<double> time)
         {
-            
-           
             List<double> Distance = new List<double>();
            
             Distance.Add(0);
             double singledistance;
             for (int i = 0; i < speed.Count - 1; i++)
             {
-
+            
                 singledistance = (speed[i] + speed[i + 1]) * (time[i + 1] - time[i]) / 2 / 3.6;
                
                 Distance.Add(singledistance);
